@@ -6,6 +6,10 @@ const App = () => {
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
 
+  const all = good + neutral + bad;
+  const average = (good - bad) / all;
+  const positive = (good / all) * 100;
+
   function handleClick(name) {
     switch (name) {
       case "good":
@@ -37,6 +41,18 @@ const App = () => {
       <div>
         <span>bad</span>
         <span>{bad}</span>
+      </div>
+      <div>
+        <span>all</span>
+        <span>{all}</span>
+      </div>
+      <div>
+        <span>average</span>
+        <span>{average || ""}</span>
+      </div>
+      <div>
+        <span>positive</span>
+        <span>{positive ? `${positive} %` : ""} </span>
       </div>
     </div>
   );
