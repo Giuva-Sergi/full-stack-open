@@ -24,12 +24,15 @@ const App = () => {
   }
 
   return (
-    <div>
-      <h1>give feedback</h1>
-      <Button name="good" handler={() => handleClick("good")} />
-      <Button name="neutral" handler={() => handleClick("neutral")} />
-      <Button name="bad" handler={() => handleClick("bad")} />
+    <>
+      <div>
+        <h1>give feedback</h1>
+        <Button name="good" handler={() => handleClick("good")} />
+        <Button name="neutral" handler={() => handleClick("neutral")} />
+        <Button name="bad" handler={() => handleClick("bad")} />
+      </div>
       <h2>statistics</h2>
+
       <Statistics
         good={good}
         neutral={neutral}
@@ -38,7 +41,7 @@ const App = () => {
         average={average}
         positive={positive}
       />
-    </div>
+    </>
   );
 };
 
@@ -49,23 +52,25 @@ function Button({ name, handler }) {
 function Statistics({ good, neutral, bad, all, average, positive }) {
   if (!good && !neutral && !bad) return <p>No feedback given</p>;
   return (
-    <>
-      <StatisticLine text="good" value={good} />
-      <StatisticLine text="neutral" value={neutral} />
-      <StatisticLine text="bad" value={bad} />
-      <StatisticLine text="all" value={all} />
-      <StatisticLine text="average" value={average} />
-      <StatisticLine text="positive" value={positive} />
-    </>
+    <table>
+      <tbody>
+        <StatisticLine text="good" value={good} />
+        <StatisticLine text="neutral" value={neutral} />
+        <StatisticLine text="bad" value={bad} />
+        <StatisticLine text="all" value={all} />
+        <StatisticLine text="average" value={average} />
+        <StatisticLine text="positive" value={positive} />
+      </tbody>
+    </table>
   );
 }
 
 function StatisticLine({ text, value }) {
   return (
-    <div>
-      <span>{text}</span>
-      <span>{value || ""}</span>
-    </div>
+    <tr>
+      <td>{text}</td>
+      <td>{value ? value : 0}</td>
+    </tr>
   );
 }
 export default App;
