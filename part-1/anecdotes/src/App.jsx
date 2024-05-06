@@ -34,17 +34,47 @@ const App = () => {
       ...prevPoints,
       [selected]: (prevPoints[selected] += 1),
     }));
-    console.log("After voting", points);
   }
 
   return (
     <div>
+      <h2>Anecdote of the day</h2>
       <p>{anecdotes[selected]}</p>
       <p>{`has ${points[selected]} vote(s)`}</p>
-      <button onClick={handleVote}>vote</button>
-      <button onClick={handleClick}>next anectode</button>
+      <Button text="vote" handler={handleVote} />
+      <Button text="next anecdote" handler={handleClick} />
+      <MostVotedAnectode points={points} anecdotes={anecdotes} />
     </div>
   );
 };
+
+function Button({ text, handler }) {
+  return <button onClick={handler}>{text}</button>;
+}
+
+function MostVotedAnectode({ points, anecdotes }) {
+  function findMostVoted() {
+    let maxPoints = 0;
+    let mostVotedAnecdote;
+
+    for (let key in points) {
+      if (points[key] > maxPoints) {
+        maxPoints = points[key];
+        mostVotedAnecdote = anecdotes[key];
+      }
+    }
+    return { maxPoints, mostVotedAnecdote };
+  }
+
+  const { maxPoints, mostVotedAnecdote } = findMostVoted();
+
+  return (
+    <>
+      <h2>Anecdote with most votes</h2>
+      <p>{mostVotedAnecdote}</p>
+      <p>{mostVotedAnecdote && `has ${maxPoints} vote(s)`}</p>
+    </>
+  );
+}
 
 export default App;
