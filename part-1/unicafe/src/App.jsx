@@ -30,6 +30,25 @@ const App = () => {
       <Button name="neutral" handler={() => handleClick("neutral")} />
       <Button name="bad" handler={() => handleClick("bad")} />
       <h2>statistics</h2>
+      <Statistics
+        good={good}
+        neutral={neutral}
+        bad={bad}
+        all={all}
+        average={average}
+        positive={positive}
+      />
+    </div>
+  );
+};
+
+function Button({ name, handler }) {
+  return <button onClick={handler}>{name}</button>;
+}
+
+function Statistics({ good, neutral, bad, all, average, positive }) {
+  return (
+    <>
       <div>
         <span>good</span>
         <span>{good}</span>
@@ -54,12 +73,7 @@ const App = () => {
         <span>positive</span>
         <span>{positive ? `${positive} %` : ""} </span>
       </div>
-    </div>
+    </>
   );
-};
-
-function Button({ name, handler }) {
-  return <button onClick={handler}>{name}</button>;
 }
-
 export default App;
