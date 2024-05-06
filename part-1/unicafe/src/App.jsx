@@ -7,8 +7,8 @@ const App = () => {
   const [bad, setBad] = useState(0);
 
   const all = good + neutral + bad;
-  const average = (good - bad) / all;
-  const positive = (good / all) * 100;
+  const average = Math.round(((good - bad) / all) * 100) / 100;
+  const positive = Math.round((good / all) * 100 * 100) / 100;
 
   function handleClick(name) {
     switch (name) {
@@ -47,33 +47,25 @@ function Button({ name, handler }) {
 }
 
 function Statistics({ good, neutral, bad, all, average, positive }) {
+  if (!good && !neutral && !bad) return <p>No feedback given</p>;
   return (
     <>
-      <div>
-        <span>good</span>
-        <span>{good}</span>
-      </div>
-      <div>
-        <span>neutral</span>
-        <span>{neutral}</span>
-      </div>
-      <div>
-        <span>bad</span>
-        <span>{bad}</span>
-      </div>
-      <div>
-        <span>all</span>
-        <span>{all}</span>
-      </div>
-      <div>
-        <span>average</span>
-        <span>{average || ""}</span>
-      </div>
-      <div>
-        <span>positive</span>
-        <span>{positive ? `${positive} %` : ""} </span>
-      </div>
+      <StatisticLine text="good" value={good} />
+      <StatisticLine text="neutral" value={neutral} />
+      <StatisticLine text="bad" value={bad} />
+      <StatisticLine text="all" value={all} />
+      <StatisticLine text="average" value={average} />
+      <StatisticLine text="positive" value={positive} />
     </>
+  );
+}
+
+function StatisticLine({ text, value }) {
+  return (
+    <div>
+      <span>{text}</span>
+      <span>{value || ""}</span>
+    </div>
   );
 }
 export default App;
