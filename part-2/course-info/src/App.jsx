@@ -1,3 +1,6 @@
+import Course from "./Course";
+import Header from "./Header";
+
 const App = () => {
   const courses = [
     {
@@ -71,18 +74,5 @@ const App = () => {
     </>
   );
 };
-
-function Header({ title }) {
-  return <h1>{title}</h1>;
-}
-
-function Course({ name, exercises }) {
-  return (
-    <li>
-      <p>{`Title: ${name}`}</p>
-      <p>{`Number of exercises: ${exercises}`}</p>
-    </li>
-  );
-}
 
 export default App;
