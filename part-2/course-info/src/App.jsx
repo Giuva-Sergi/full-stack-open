@@ -23,6 +23,9 @@ const App = () => {
 
   const { name, parts } = course;
 
+  const sum = parts.reduce((acc, currPart) => currPart.exercises + acc, 0);
+  console.log(sum);
+
   return (
     <>
       <Header title={name} />
@@ -31,7 +34,7 @@ const App = () => {
           <Course key={part.id} name={part.name} exercises={part.exercises} />
         ))}
       </ul>
-      {/* <Course course={course} />; */}
+      <h3>total of {sum} exercises</h3>
     </>
   );
 };
