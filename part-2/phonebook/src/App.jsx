@@ -7,12 +7,14 @@ import {
   getContacts,
   updatePhoneNumber,
 } from "./services/contacts";
+import Notification from "./components/Notification";
 
 function App() {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     getContacts().then((contacts) => setPersons(contacts));
@@ -28,10 +30,10 @@ function App() {
       const person = persons.find((person) => person.name === newName);
       const updatedPersonId = person.id;
       const updatedPerson = { ...person, number: newNumber };
-      updatePhoneNumber(person.id, updatedPerson).then((updatedObj) => {
+      updatePhoneNumber(person.id, updatedPerson).then((returnedObj) => {
         setPersons(
           persons.map((person) =>
-            person.id === updatedPersonId ? updatedObj : person
+            person.id === updatedPersonId ? returnedObj : person
           )
         );
       });
@@ -46,6 +48,10 @@ function App() {
       setPersons([...persons, newContact]);
       setNewName("");
       setNewNumber("");
+      setMessage(`Added ${newName}`);
+      setTimeout(() => {
+        setMessage(null);
+      }, 3500);
     });
   }
 
@@ -58,6 +64,7 @@ function App() {
   return (
     <div>
       <h2>Phonebook</h2>
+      {message && <Notification message={message} />}
       <Searchbar
         value={filter}
         handleChange={(e) => setFilter(e.target.value)}
