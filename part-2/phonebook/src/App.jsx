@@ -3,6 +3,7 @@ import Person from "./components/Person";
 import Searchbar from "./components/Searchbar";
 import AddPersonForm from "./components/AddPersonForm";
 import axios from "axios";
+import { createContact, getContacts } from "./services/contacts";
 
 function App() {
   const [persons, setPersons] = useState([]);
@@ -10,14 +11,9 @@ function App() {
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
 
-  const fetchPersons = function () {
-    axios.get("http://localhost:3001/persons").then((res) => {
-      const persons = res.data;
-      setPersons(persons);
-    });
-  };
-
-  useEffect(fetchPersons, []);
+  useEffect(() => {
+    getContacts().then((contacts) => setPersons(contacts));
+  }, []);
 
   function addPerson(e) {
     e.preventDefault();
@@ -29,13 +25,14 @@ function App() {
       return;
     }
     const newPerson = {
-      id: persons.length + 1,
       name: newName,
       number: newNumber,
     };
-    setPersons([...persons, newPerson]);
-    setNewName("");
-    setNewNumber("");
+    createContact(newPerson).then((newContact) => {
+      setPersons([...persons, newContact]);
+      setNewName("");
+      setNewNumber("");
+    });
   }
 
   const filteredPersons = filter
