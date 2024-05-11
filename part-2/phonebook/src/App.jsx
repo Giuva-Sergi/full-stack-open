@@ -30,29 +30,40 @@ function App() {
       const person = persons.find((person) => person.name === newName);
       const updatedPersonId = person.id;
       const updatedPerson = { ...person, number: newNumber };
-      updatePhoneNumber(person.id, updatedPerson).then((returnedObj) => {
-        setPersons(
-          persons.map((person) =>
-            person.id === updatedPersonId ? returnedObj : person
-          )
-        );
+      updatePhoneNumber(person.id, updatedPerson)
+        .then((returnedObj) => {
+          setPersons(
+            persons.map((person) =>
+              person.id === updatedPersonId ? returnedObj : person
+            )
+          );
+        })
+        .catch((error) => {
+          setMessage(
+            `Information of ${newName} has already been removed from the server`
+          );
+          setTimeout(() => {
+            setMessage(null);
+          }, 3500);
+          console.error(error);
+        });
+      setNewName("");
+      setNewNumber("");
+    } else {
+      const newPerson = {
+        name: newName,
+        number: newNumber,
+      };
+      createContact(newPerson).then((newContact) => {
+        setPersons([...persons, newContact]);
+        setNewName("");
+        setNewNumber("");
+        setMessage(`Added ${newName}`);
+        setTimeout(() => {
+          setMessage(null);
+        }, 3500);
       });
-      setNewName("");
-      setNewNumber("");
     }
-    const newPerson = {
-      name: newName,
-      number: newNumber,
-    };
-    createContact(newPerson).then((newContact) => {
-      setPersons([...persons, newContact]);
-      setNewName("");
-      setNewNumber("");
-      setMessage(`Added ${newName}`);
-      setTimeout(() => {
-        setMessage(null);
-      }, 3500);
-    });
   }
 
   const filteredPersons = filter
