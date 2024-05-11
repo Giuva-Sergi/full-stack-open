@@ -6,29 +6,19 @@
       "id": "2"
     },
     {
-      "name": "Dan Abramov",
-      "number": "12-43-234345",
-      "id": "3"
-    },
-    {
       "name": "Mary Poppendieck",
       "number": "39-23-6423122",
       "id": "4"
     },
     {
-      "id": "86db",
-      "name": "Michele Catania",
-      "number": "328 60 53 625"
+      "id": "af31",
+      "name": "Paolino Paperino",
+      "number": "166 123458"
     },
     {
-      "id": "e7ea",
-      "name": "test test test",
-      "number": "555"
-    },
-    {
-      "id": "7289",
-      "name": "Arto Hellas",
-      "number": "320 2357573"
+      "id": "5535",
+      "name": "Paolino Paperino",
+      "number": "166 123458"
     }
   ]
 }

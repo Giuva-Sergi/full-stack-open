@@ -1,9 +1,12 @@
 import { deleteContact } from "../services/contacts";
 
-function Person({ id, name, number }) {
+function Person({ id, name, number, persons, setterFn }) {
   function handleDelete() {
     window.confirm(`Delete ${name} ?`);
-    deleteContact(id);
+    deleteContact(id).then((contact) => {
+      id = contact.id;
+      setterFn(persons.filter((person) => person.id !== id));
+    });
   }
   return (
     <li>

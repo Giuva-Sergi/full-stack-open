@@ -2,7 +2,11 @@ import { useEffect, useState } from "react";
 import Person from "./components/Person";
 import Searchbar from "./components/Searchbar";
 import AddPersonForm from "./components/AddPersonForm";
-import { createContact, getContacts } from "./services/contacts";
+import {
+  createContact,
+  getContacts,
+  updatePhoneNumber,
+} from "./services/contacts";
 
 function App() {
   const [persons, setPersons] = useState([]);
@@ -12,16 +16,27 @@ function App() {
 
   useEffect(() => {
     getContacts().then((contacts) => setPersons(contacts));
-  }, [persons, setPersons]);
+  }, []);
 
   function addPerson(e) {
     e.preventDefault();
-    if (!newName) return;
+    if (!newName || !newNumber) return;
     if (persons.some((person) => person.name === newName)) {
-      alert(`${newName} is already added to the phonebook`);
+      window.confirm(
+        `${newName} is already added to the phonebook, replace the old number with a new one?`
+      );
+      const person = persons.find((person) => person.name === newName);
+      const updatedPersonId = person.id;
+      const updatedPerson = { ...person, number: newNumber };
+      updatePhoneNumber(person.id, updatedPerson).then((updatedObj) => {
+        setPersons(
+          persons.map((person) =>
+            person.id === updatedPersonId ? updatedObj : person
+          )
+        );
+      });
       setNewName("");
       setNewNumber("");
-      return;
     }
     const newPerson = {
       name: newName,
@@ -62,6 +77,8 @@ function App() {
             id={person.id}
             name={person.name}
             number={person.number}
+            persons={persons}
+            setterFn={setPersons}
           />
         ))}
       </ul>
