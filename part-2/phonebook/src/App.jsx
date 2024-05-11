@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import Person from "./components/Person";
 import Searchbar from "./components/Searchbar";
 import AddPersonForm from "./components/AddPersonForm";
-import axios from "axios";
 import { createContact, getContacts } from "./services/contacts";
 
 function App() {
@@ -13,7 +12,7 @@ function App() {
 
   useEffect(() => {
     getContacts().then((contacts) => setPersons(contacts));
-  }, []);
+  }, [persons, setPersons]);
 
   function addPerson(e) {
     e.preventDefault();
@@ -58,7 +57,12 @@ function App() {
       <h2>Numbers</h2>
       <ul>
         {filteredPersons.map((person) => (
-          <Person key={person.id} name={person.name} number={person.number} />
+          <Person
+            key={person.id}
+            id={person.id}
+            name={person.name}
+            number={person.number}
+          />
         ))}
       </ul>
     </div>
