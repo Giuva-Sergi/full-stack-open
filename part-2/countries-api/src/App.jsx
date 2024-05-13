@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import { getAllCountries, getCountryByName } from "./services/countries";
 import CountryItem from "./components/CountryItem";
+import CountryBasicInfo from "./components/CountryBasicInfo";
 
 function App() {
   const [countries, setCountries] = useState([]);
   const [query, setQuery] = useState("");
   const [country, setCountry] = useState(null);
-
-  console.log("APP RENDER");
 
   useEffect(() => {
     getAllCountries().then((res) =>
@@ -20,12 +19,10 @@ function App() {
     countries.filter((country) => country.toLowerCase().includes(query));
 
   useEffect(() => {
-    if (filteredCountries.length === 1 && country === null) {
+    if (filteredCountries.length === 1) {
       getCountryByName(filteredCountries[0]).then((res) => setCountry(res));
-    } else if (filteredCountries.length !== 1 && country !== null) {
-      setCountry(null);
     }
-  }, [filteredCountries, country]);
+  }, [filteredCountries, setCountry]);
 
   return (
     <>
@@ -44,10 +41,15 @@ function App() {
         {filteredCountries.length > 1 && filteredCountries.length <= 10 && (
           <ul>
             {filteredCountries.map((country) => (
-              <CountryItem key={country} name={country} />
+              <CountryItem
+                key={country}
+                name={country}
+                onSetCountry={setCountry}
+              />
             ))}
           </ul>
         )}
+        {country && <CountryBasicInfo country={country} />}
       </div>
     </>
   );
