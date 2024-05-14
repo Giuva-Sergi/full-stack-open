@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
-
-// app(express.json());
+app.use(express.json());
 
 let persons = [
   {
@@ -49,6 +48,22 @@ app.get("/api/persons/:id", (req, res) => {
     res.json(person);
   } else {
     res.status(404).end();
+  }
+});
+
+app.post("/api/persons", (req, res) => {
+  if (!req.body.name || !req.body.number) {
+    res.status(400).json({ error: "Missing content" });
+  } else if (persons.some((person) => person.name === req.body.name)) {
+    res.status(400).json({ error: "name must be unique" });
+  } else {
+    const newPerson = {
+      id: Math.random() * 10,
+      name: req.body.name,
+      number: req.body.number,
+    };
+    persons = [...persons, newPerson];
+    res.status(200).end();
   }
 });
 
