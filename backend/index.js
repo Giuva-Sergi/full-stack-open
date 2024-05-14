@@ -16,22 +16,19 @@ let notes = [
   },
 ];
 
-function generateID() {
-  const maxId = notes.length > 0 ? Math.max(...notes.map((n) => n.id)) : 0;
-  return maxId + 1;
-}
-
 const express = require("express");
+const cors = require("cors");
 
 const app = express();
 
 app.use(express.json());
+app.use(cors());
 
 app.get("/", (request, response) => {
   response.send("<h1>Yes, nodemon is working!!!</h1>");
 });
 
-app.get("/notes", (request, response) => {
+app.get("/api/notes", (request, response) => {
   response.json(notes);
 });
 
@@ -53,7 +50,7 @@ app.post("/api/notes", (req, res) => {
   }
 
   const note = {
-    id: generateID(),
+    id: Math.random() * 10,
     content: body.content,
     important: Boolean(body.important) || false,
   };
@@ -71,7 +68,7 @@ app.delete("/api/notes/:id", (req, res) => {
   res.status(204).end();
 });
 
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
