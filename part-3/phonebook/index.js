@@ -2,6 +2,27 @@ const express = require("express");
 const app = express();
 app.use(express.json());
 
+const morgan = require("morgan");
+
+morgan.token("content", (req) => {
+  if (req.method !== "POST") return;
+  return JSON.stringify(req.body);
+});
+app.use(
+  morgan(function (tokens, req, res) {
+    return [
+      tokens.method(req, res),
+      tokens.url(req, res),
+      tokens.status(req, res),
+      tokens.res(req, res, "content-length"),
+      "-",
+      tokens["response-time"](req, res),
+      "ms",
+      tokens["content"](req, res),
+    ].join(" ");
+  })
+);
+
 let persons = [
   {
     id: 1,
@@ -24,10 +45,6 @@ let persons = [
     number: "39-23-6423122",
   },
 ];
-
-app.get("/", (req, res) => {
-  res.send("<h1>Helloooooo</h1>");
-});
 
 app.get("/api/persons", (req, res) => {
   res.json(persons);
@@ -63,7 +80,7 @@ app.post("/api/persons", (req, res) => {
       number: req.body.number,
     };
     persons = [...persons, newPerson];
-    res.status(200).end();
+    res.status(200).send(newPerson);
   }
 });
 
