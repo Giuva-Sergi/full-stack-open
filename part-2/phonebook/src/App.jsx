@@ -20,6 +20,8 @@ function App() {
     getContacts().then((contacts) => setPersons(contacts));
   }, []);
 
+  console.log(persons);
+
   function addPerson(e) {
     e.preventDefault();
     if (!newName || !newNumber) return;
