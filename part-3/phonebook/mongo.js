@@ -15,3 +15,12 @@ mongoose.set("strictQuery", false);
 
 // establish connection with the db
 mongoose.connect(url);
+
+// create schema
+const contactSchema = new mongoose.Schema({
+  name: String,
+  number: String,
+});
+
+// create model
+const Contact = mongoose.model("Contact", contactSchema);
