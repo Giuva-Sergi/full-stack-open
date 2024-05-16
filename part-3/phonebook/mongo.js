@@ -1,12 +1,5 @@
 const mongoose = require("mongoose");
 
-console.log(process.argv);
-
-if (process.argv.length < 3) {
-  console.log("You have to include your password!");
-  process.exit(1);
-}
-
 const password = process.argv[2];
 
 const url = `mongodb+srv://giovannisrg:${password}@clusterphonebook.jaavlfi.mongodb.net/phonebookApp?retryWrites=true&w=majority&appName=ClusterPhonebook`;
@@ -24,3 +17,26 @@ const contactSchema = new mongoose.Schema({
 
 // create model
 const Contact = mongoose.model("Contact", contactSchema);
+
+if (process.argv.length > 3) {
+  const name = process.argv[3];
+  const number = process.argv[4];
+
+  const contact = new Contact({
+    name,
+    number,
+  });
+
+  contact.save().then((res) => {
+    console.log(`added ${name} number ${number} to phonebook`);
+    mongoose.connection.close();
+  });
+} else if (process.argv.length === 3) {
+  Contact.find({}).then((contacts) => {
+    console.log("phonebook:");
+    contacts.forEach((contact) =>
+      console.log(`${contact.name} ${contact.number}`)
+    );
+    mongoose.connection.close();
+  });
+}
