@@ -69,6 +69,17 @@ app.post("/api/persons", (req, res) => {
   }
 });
 
+app.put("/api/persons/:id", (req, res, next) => {
+  const contact = {
+    name: req.body.name,
+    number: req.body.number,
+  };
+
+  Contact.findByIdAndUpdate(req.params.id, contact, { new: true })
+    .then((updatedContact) => res.status(201).send(updatedContact))
+    .catch((error) => next(error));
+});
+
 app.delete("/api/persons/:id", (req, res, next) => {
   Contact.findByIdAndDelete(req.params.id)
     .then(() => res.status(204).end())
