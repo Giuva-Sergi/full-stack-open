@@ -38,9 +38,11 @@ app.get("/api/persons", (req, res) => {
 
 app.get("/info", (req, res) => {
   const now = new Date();
-  res.send(`<p>Phonebook has info for ${persons.length} people</p>
-  <p>${now}</p>
-  `);
+  Contact.find({}).then((contacts) => {
+    res.send(
+      `<p>Phonebook has info for ${contacts.length} people</p><p>${now}</p>`
+    );
+  });
 });
 
 app.get("/api/persons/:id", (req, res, next) => {
