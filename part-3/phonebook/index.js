@@ -43,15 +43,16 @@ app.get("/info", (req, res) => {
   `);
 });
 
-app.get("/api/persons/:id", (req, res) => {
-  const id = Number(req.params.id);
-  const person = persons.find((person) => person.id === id);
-
-  if (person) {
-    res.json(person);
-  } else {
-    res.status(404).end();
-  }
+app.get("/api/persons/:id", (req, res, next) => {
+  Contact.findById(req.params.id)
+    .then((contact) => {
+      if (contact) {
+        res.json(contact);
+      } else {
+        res.status(404).send({ error: "person not found" });
+      }
+    })
+    .catch((error) => next(error));
 });
 
 app.post("/api/persons", (req, res) => {
@@ -75,16 +76,19 @@ app.delete("/api/persons/:id", (req, res, next) => {
 });
 
 const errorHandler = function (error, request, response, next) {
-  console.error("PORCO DIO", error);
-
   if (error.name === "CastError") {
-    response.status(400).send({ message: "malformatted id" });
+    return response.status(400).send({ error: "malformatted id" });
   }
 
   next(error);
 };
 
+const generalErrorHandler = function (error, request, response, next) {
+  return response.status(500).send({ error: "internal server error" });
+};
+
 app.use(errorHandler);
+app.use(generalErrorHandler);
 
 const PORT = process.env.PORT || 3001;
 
