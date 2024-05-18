@@ -68,12 +68,23 @@ app.post("/api/persons", (req, res) => {
   }
 });
 
-app.delete("/api/persons/:id", (req, res) => {
-  const id = Number(req.params.id);
-  persons = persons.filter((person) => person.id !== id);
-
-  res.status(204).end();
+app.delete("/api/persons/:id", (req, res, next) => {
+  Contact.findByIdAndDelete(req.params.id)
+    .then(() => res.status(204).end())
+    .catch((error) => next(error));
 });
+
+const errorHandler = function (error, request, response, next) {
+  console.error("PORCO DIO", error);
+
+  if (error.name === "CastError") {
+    response.status(400).send({ message: "malformatted id" });
+  }
+
+  next(error);
+};
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 3001;
 
