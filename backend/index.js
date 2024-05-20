@@ -1,4 +1,4 @@
-require("dotenv").config();
+// require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const app = express();
@@ -30,29 +30,32 @@ app.get("/api/notes/:id", (req, res, next) => {
     });
 });
 
-app.post("/api/notes", (req, res) => {
+app.post("/api/notes", (req, res, next) => {
   const body = req.body;
 
-  if (!body.content) {
-    return res.status(400).json({ error: "Content missing" });
-  } else {
-    const note = new Note({
-      content: body.content,
-      important: Boolean(body.important) || false,
-    });
+  const note = new Note({
+    content: body.content,
+    important: Boolean(body.important) || false,
+  });
 
-    note.save().then((savedNote) => res.json(savedNote));
-  }
+  note
+    .save()
+    .then((savedNote) => res.json(savedNote))
+    .catch((error) => next(error));
 });
 
 app.put("/api/notes/:id", (req, res, next) => {
-  const body = req.body;
+  const { content, important } = req.body;
   const note = {
-    content: body.content,
-    important: body.important,
+    content,
+    important,
   };
 
-  Note.findByIdAndUpdate(req.params.id, note, { new: true })
+  Note.findByIdAndUpdate(req.params.id, note, {
+    new: true,
+    runValidators: true,
+    context: "query",
+  })
     .then((updatedNote) => res.status(201).json(updatedNote))
     .catch((error) => next(error));
 });
@@ -68,10 +71,12 @@ const unknownEndpoint = function (request, response) {
 };
 
 const errorHandler = function (error, request, response, next) {
-  console.error(error.message);
+  console.error(error);
 
   if (error.name === "CastError") {
     response.status(400).send({ error: "malformatted id" });
+  } else if (error.name === "ValidationError") {
+    response.status(400).send({ error: error.message });
   }
 
   next(error);
