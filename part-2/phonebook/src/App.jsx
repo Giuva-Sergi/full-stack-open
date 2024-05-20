@@ -20,8 +20,6 @@ function App() {
     getContacts().then((contacts) => setPersons(contacts));
   }, []);
 
-  console.log(persons);
-
   function addPerson(e) {
     e.preventDefault();
     if (!newName || !newNumber) return;
@@ -56,15 +54,22 @@ function App() {
         name: newName,
         number: newNumber,
       };
-      createContact(newPerson).then((newContact) => {
-        setPersons([...persons, newContact]);
-        setNewName("");
-        setNewNumber("");
-        setMessage(`Added ${newName}`);
-        setTimeout(() => {
-          setMessage(null);
-        }, 3500);
-      });
+      createContact(newPerson)
+        .then((newContact) => {
+          setPersons([...persons, newContact]);
+          setNewName("");
+          setNewNumber("");
+          setMessage(`Added ${newName}`);
+          setTimeout(() => {
+            setMessage(null);
+          }, 3500);
+        })
+        .catch((error) => {
+          setMessage(error.response.data.error);
+          setTimeout(() => {
+            setMessage(null);
+          }, 3500);
+        });
     }
   }
 
