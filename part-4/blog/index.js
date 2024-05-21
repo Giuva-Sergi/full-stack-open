@@ -2,15 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
-
-const blogSchema = new mongoose.Schema({
-  title: String,
-  author: String,
-  url: String,
-  likes: Number,
-});
-
-const Blog = mongoose.model("Blog", blogSchema);
+const Blog = require("./models/blog");
 
 const mongoUrl =
   "mongodb+srv://empedocle:Donsarosalina-1988@fullstack-open-cluster.smzm6ue.mongodb.net/bloglist?retryWrites=true&w=majority&appName=Fullstack-open-cluster";
