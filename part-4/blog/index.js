@@ -4,8 +4,9 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const Blog = require("./models/blog");
 
-const mongoUrl =
-  "mongodb+srv://empedocle:Donsarosalina-1988@fullstack-open-cluster.smzm6ue.mongodb.net/bloglist?retryWrites=true&w=majority&appName=Fullstack-open-cluster";
+require("dotenv").config();
+
+const mongoUrl = process.env.MONGODB_URI;
 mongoose.connect(mongoUrl).then(() => console.log("CONNECTED TO MONGODB"));
 
 app.use(cors());
@@ -25,7 +26,7 @@ app.post("/api/blogs", (request, response) => {
   });
 });
 
-const PORT = 3003;
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
