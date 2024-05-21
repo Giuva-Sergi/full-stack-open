@@ -2,11 +2,12 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const mongoose = require("mongoose");
+const info = require("./utils/logger");
+const { mongoUrl, PORT } = require("./utils/config");
 const Blog = require("./models/blog");
 
 require("dotenv").config();
 
-const mongoUrl = process.env.MONGODB_URI;
 mongoose.connect(mongoUrl).then(() => console.log("CONNECTED TO MONGODB"));
 
 app.use(cors());
@@ -26,7 +27,6 @@ app.post("/api/blogs", (request, response) => {
   });
 });
 
-const PORT = process.env.PORT;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  info(`Server running on port ${PORT}`);
 });
