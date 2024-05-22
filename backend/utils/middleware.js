@@ -1,9 +1,10 @@
+const logger = require("./logger");
 const unknownEndpoint = function (request, response) {
   response.status(404).send({ error: "unknown endpoint" });
 };
 
 const errorHandler = function (error, request, response, next) {
-  error(error);
+  logger.error(error);
 
   if (error.name === "CastError") {
     response.status(400).send({ error: "malformatted id" });
