@@ -2,9 +2,7 @@ const { test, describe } = require("node:test");
 const assert = require("node:assert");
 const listHelper = require("../utils/list_helper");
 
-describe("totalLikes", () => {
-  const emptyList = [];
-
+describe("favoriteBlog", () => {
   const listWithOneBlog = [
     {
       _id: "5a422aa71b54a676234d17f8",
@@ -67,16 +65,25 @@ describe("totalLikes", () => {
     },
   ];
 
-  test("of empty list is zero", () => {
-    assert.strictEqual(listHelper.totalLikes(emptyList), 0);
+  test("favoriteBlog of a list with only one element is equal to that element", () => {
+    assert.deepEqual(listHelper.favoriteBlog(listWithOneBlog), {
+      _id: "5a422aa71b54a676234d17f8",
+      title: "Go To Statement Considered Harmful",
+      author: "Edsger W. Dijkstra",
+      url: "https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf",
+      likes: 5,
+      __v: 0,
+    });
   });
 
-  test("when list has only one blog, equals the likes of that", () => {
-    const result = listHelper.totalLikes(listWithOneBlog);
-    assert.strictEqual(result, 5);
-  });
-
-  test("of a bigger list is calculated right", () => {
-    assert.strictEqual(listHelper.totalLikes(blogs), 36);
+  test("favoriteBlog of a big list is calculated right", () => {
+    assert.deepEqual(listHelper.favoriteBlog(blogs), {
+      _id: "5a422b3a1b54a676234d17f9",
+      title: "Canonical string reduction",
+      author: "Edsger W. Dijkstra",
+      url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
+      likes: 12,
+      __v: 0,
+    });
   });
 });

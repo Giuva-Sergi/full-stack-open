@@ -8,4 +8,17 @@ const totalLikes = (blogs) => {
   }, 0);
 };
 
-module.exports = { dummy, totalLikes };
+const favoriteBlog = (blogs) => {
+  const likes = blogs.reduce((acc, currVal) => {
+    if (currVal.likes > acc) {
+      acc = currVal.likes;
+    }
+    return acc;
+  }, 0);
+
+  return blogs.find((blog) => blog.likes === likes);
+};
+
+console.log(favoriteBlog([]));
+
+module.exports = { dummy, totalLikes, favoriteBlog };
