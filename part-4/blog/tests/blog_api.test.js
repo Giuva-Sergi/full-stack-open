@@ -91,6 +91,25 @@ test("unique identifier file is named id", async () => {
   });
 });
 
+test("making a POST request successfully creates new blog post", async () => {
+  const payload = {
+    title: "Testing post",
+    author: "Robert C. Martin",
+    url: "http://example.come",
+    likes: 33,
+  };
+
+  await api
+    .post("/api/blogs")
+    .send(payload)
+    .expect(201)
+    .expect("Content-Type", /application\/json/);
+
+  const blogsAtEnd = await Blog.find({});
+
+  assert.strictEqual(blogsAtEnd.length, initialBlogs.length + 1);
+});
+
 after(async () => {
   await mongoose.connection.close();
 });
