@@ -81,6 +81,16 @@ test("there are exactly six documents in the DB", async () => {
   assert.strictEqual(response.body.length, initialBlogs.length);
 });
 
+test("unique identifier file is named id", async () => {
+  const response = await api.get("/api/blogs");
+  response.body.forEach((blog) => {
+    assert(
+      Object.keys(blog).includes("id") && !Object.keys(blog).includes("_id"),
+      true
+    );
+  });
+});
+
 after(async () => {
   await mongoose.connection.close();
 });
