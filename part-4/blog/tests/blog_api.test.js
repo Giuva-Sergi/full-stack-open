@@ -125,6 +125,27 @@ test("default value of likes is zero", async () => {
 
   const blogsAtEnd = await Blog.find({});
   assert.strictEqual(blogsAtEnd.at(-1).likes, 0);
+  assert.strictEqual(blogsAtEnd.length, initialBlogs.length + 1);
+});
+
+test("missing title or URL in a POST request ends up in 400 status code", async () => {
+  const payloads = [
+    {
+      author: "Robert C. Martin",
+      url: "http://example.come",
+    },
+    {
+      title: "Testing missing content blog",
+      author: "Robert C. Martin",
+    },
+  ];
+
+  for (let payload of payloads) {
+    await api.post("/api/blogs").send(payload).expect(400);
+  }
+
+  const blogsAtEnd = await Blog.find({});
+  assert.strictEqual(blogsAtEnd.length, initialBlogs.length);
 });
 
 after(async () => {
