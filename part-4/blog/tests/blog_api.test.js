@@ -93,7 +93,7 @@ test("unique identifier file is named id", async () => {
 
 test("making a POST request successfully creates new blog post", async () => {
   const payload = {
-    title: "Testing post",
+    title: "Testing blog",
     author: "Robert C. Martin",
     url: "http://example.come",
     likes: 33,
@@ -108,6 +108,23 @@ test("making a POST request successfully creates new blog post", async () => {
   const blogsAtEnd = await Blog.find({});
 
   assert.strictEqual(blogsAtEnd.length, initialBlogs.length + 1);
+});
+
+test("default value of likes is zero", async () => {
+  const payload = {
+    title: "Testing zero like blog",
+    author: "Robert C. Martin",
+    url: "http://example.come",
+  };
+
+  await api
+    .post("/api/blogs")
+    .send(payload)
+    .expect(201)
+    .expect("Content-Type", /application\/json/);
+
+  const blogsAtEnd = await Blog.find({});
+  assert.strictEqual(blogsAtEnd.at(-1).likes, 0);
 });
 
 after(async () => {
