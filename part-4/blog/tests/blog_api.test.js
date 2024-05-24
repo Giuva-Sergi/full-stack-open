@@ -110,6 +110,69 @@ describe("deleting a blog", () => {
   });
 });
 
+describe("updating a blog", () => {
+  beforeEach(() => initializeDB(initialBlogs));
+
+  test("succeeds with status code 201 if id is valid", async () => {
+    const payload = {
+      likes: 12,
+    };
+
+    const blogsAtStart = await Blog.find({});
+
+    await api
+      .put(`/api/blogs/${blogsAtStart.at(0).id}`)
+      .send(payload)
+      .expect(201)
+      .expect("Content-Type", /application\/json/);
+
+    const blogsAtEnd = await api.get("/api/blogs");
+
+    assert.strictEqual(blogsAtStart.length, blogsAtEnd.body.length);
+  });
+
+  test("failed with status code 400 if id is not valid", async () => {
+    const payload = {
+      likes: 12,
+    };
+
+    const malformattedId = 5;
+
+    const blogsAtStart = await Blog.find({});
+
+    await api.put(`/api/blogs/${malformattedId}`).send(payload).expect(400);
+
+    const response = await api.get("/api/blogs");
+
+    assert.strictEqual(blogsAtStart.length, response.body.length);
+  });
+
+  test("failed with status code 404 if id not found", async () => {
+    const postContent = {
+      title: "Test title",
+      author: "Test author",
+      url: "https://test.com",
+    };
+
+    const payload = {
+      likes: 11,
+    };
+
+    const blogsAtStart = await Blog.find({});
+
+    const postToDelete = await api.post("/api/blogs").send(postContent);
+    const postToDeleteId = postToDelete.body.id;
+
+    await Blog.findByIdAndDelete(postToDeleteId);
+
+    await api.put(`/api/blogs/${postToDeleteId}`).send(payload).expect(404);
+
+    const response = await api.get("/api/blogs");
+
+    assert.strictEqual(blogsAtStart.length, response.body.length);
+  });
+});
+
 after(async () => {
   await mongoose.connection.close();
 });
