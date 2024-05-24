@@ -7,14 +7,23 @@ blogsRouter.get("/", async (request, response) => {
   response.json(blogs);
 });
 
-blogsRouter.post("/", async (request, response) => {
+blogsRouter.post("/", async (request, response, next) => {
   const blog = new Blog(request.body);
 
   try {
     const savedBlog = await blog.save();
     response.status(201).json(savedBlog);
   } catch (error) {
-    response.status(400).send({ message: error.message });
+    next(error);
+  }
+});
+
+blogsRouter.delete("/:id", async (request, response, next) => {
+  try {
+    await Blog.findByIdAndDelete(request.params.id);
+    response.status(204).end();
+  } catch (error) {
+    next(error);
   }
 });
 
