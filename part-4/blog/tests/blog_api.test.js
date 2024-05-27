@@ -100,7 +100,7 @@ describe("deleting a blog", () => {
   });
 
   test("fails with status code 400 if id is not valid", async () => {
-    const invalidId = "95678";
+    const invalidId = "12345invalid";
 
     await api.delete(`/api/blogs/${invalidId}`).expect(400);
 
@@ -136,7 +136,7 @@ describe("updating a blog", () => {
       likes: 12,
     };
 
-    const malformattedId = 5;
+    const malformattedId = "invalidid";
 
     const blogsAtStart = await Blog.find({});
 
