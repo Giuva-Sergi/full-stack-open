@@ -2,7 +2,12 @@ const mongoose = require("mongoose");
 
 // userschema with username, password and name
 const userSchema = new mongoose.Schema({
-  username: String,
+  username: {
+    type: String,
+    required: true,
+    minLength: 3,
+    unique: true,
+  },
   name: String,
   passwordHash: String,
 });
