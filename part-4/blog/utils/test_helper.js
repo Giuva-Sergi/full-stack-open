@@ -1,4 +1,7 @@
 const Blog = require("../models/blog");
+const User = require("../models/user");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const initialBlogs = [
   {
@@ -51,6 +54,12 @@ const initialBlogs = [
   },
 ];
 
+const userForTest = {
+  name: "User Test",
+  username: "userTest",
+  password: "testpassword",
+};
+
 const initializeDB = async function (initialBlogs) {
   await Blog.deleteMany({});
 
@@ -60,4 +69,25 @@ const initializeDB = async function (initialBlogs) {
   }
 };
 
-module.exports = { initialBlogs, initializeDB };
+const initializeUser = async function (userForTest) {
+  await User.deleteMany({});
+
+  const passwordHash = await bcrypt.hash(userForTest.password, 10);
+  const payload = {
+    name: userForTest.name,
+    username: userForTest.username,
+    passwordHash,
+  };
+  const user = new User(payload);
+  const savedUser = await user.save();
+
+  const userForToken = {
+    username: savedUser.username,
+    id: savedUser._id,
+  };
+
+  const token = jwt.sign(userForToken, process.env.SECRET);
+  return token;
+};
+
+module.exports = { initialBlogs, initializeDB, userForTest, initializeUser };

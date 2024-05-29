@@ -28,10 +28,20 @@ const tokenExtractor = function (request, response, next) {
   next();
 };
 
-const userExtractor = async function (request, response, next) {
-  const tokenizedUser = jwt.verify(request.token, process.env.SECRET);
-  request.user = await User.findById(tokenizedUser.id);
-  next();
+const userExtractor = async (request, response, next) => {
+  if (!request.token) {
+    return response.status(401).json({ error: "token missing" });
+  }
+  try {
+    const decodedToken = jwt.verify(request.token, process.env.SECRET);
+    if (!decodedToken.id) {
+      return response.status(401).json({ error: "token invalid" });
+    }
+    request.user = await User.findById(decodedToken.id);
+    next();
+  } catch (error) {
+    next(error);
+  }
 };
 
 module.exports = { errorHandler, tokenExtractor, userExtractor };
