@@ -16,11 +16,11 @@ usersRouter.post("/", async (req, res, next) => {
   const { name, username, password } = req.body;
 
   if (!password) {
-    res.status(400).send({ error: "password is required" });
+    return res.status(400).send({ error: "password is required" });
   }
 
   if (password?.length < 3) {
-    res
+    return res
       .status(400)
       .send({ error: "password must be at least 3 characters long" });
   }

@@ -8,11 +8,13 @@ const errorHandler = function (error, request, response, next) {
     error.message.includes("E11000 duplicate key error")
   ) {
     response.status(400).send({ error: "expected `username` to be unique" });
+  } else if (error.name === "JsonWebTokenError") {
+    response.status(401).send({ error: "token invalid" });
   }
   next(error);
 };
 
-const extractToken = function (request, response, next) {
+const tokenExtractor = function (request, response, next) {
   const authorization = request.get("authorization");
 
   if (authorization && authorization.startsWith("Bearer ")) {
@@ -23,4 +25,4 @@ const extractToken = function (request, response, next) {
   next();
 };
 
-module.exports = { errorHandler, extractToken };
+module.exports = { errorHandler, tokenExtractor };
