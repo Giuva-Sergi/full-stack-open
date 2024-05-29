@@ -12,4 +12,15 @@ const errorHandler = function (error, request, response, next) {
   next(error);
 };
 
-module.exports = errorHandler;
+const extractToken = function (request, response, next) {
+  const authorization = request.get("authorization");
+
+  if (authorization && authorization.startsWith("Bearer ")) {
+    const formattedAuth = authorization.replace("Bearer ", "");
+    request.token = formattedAuth;
+  }
+
+  next();
+};
+
+module.exports = { errorHandler, extractToken };

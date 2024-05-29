@@ -10,12 +10,10 @@ loginRouter.post("/", async (req, res) => {
   const isPasswordCorrect =
     user === null ? false : await bcrypt.compare(password, user.passwordHash);
 
-  // if no user or password not correct status 401
   if (!user || !isPasswordCorrect) {
     res.status(401).send({ error: "invalid username or password" });
   }
 
-  // if password is correct create token
   const userForToken = {
     username: user.username,
     id: user._id,
