@@ -30,6 +30,11 @@ const App = () => {
     window.localStorage.setItem("loggedUser", JSON.stringify(user));
   }
 
+  function handleLogout() {
+    window.localStorage.removeItem("loggedUser");
+    setUser(null);
+  }
+
   return (
     <>
       {!user && (
@@ -42,13 +47,14 @@ const App = () => {
         />
       )}
       {user && (
-        <div>
+        <>
           <h2>blogs</h2>
           <p>{user.name} logged in</p>
+          <button onClick={handleLogout}>log out</button>
           {blogs.map((blog) => (
             <Blog key={blog.id} blog={blog} />
           ))}
-        </div>
+        </>
       )}
     </>
   );
