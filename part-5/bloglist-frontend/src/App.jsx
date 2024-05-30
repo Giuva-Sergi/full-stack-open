@@ -1,15 +1,17 @@
 import { useState, useEffect } from "react";
 import Blog from "./components/Blog";
+import AddNewBlog from "./components/AddNewBlog";
+import LoginForm from "./components/LoginForm";
+import Notification from "./components/Notification";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
-import LoginForm from "./components/LoginForm";
-import AddNewBlog from "./components/AddNewBlog";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [message, setMessage] = useState({ content: "", type: "" });
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -26,9 +28,16 @@ const App = () => {
   async function handleLogin(e) {
     e.preventDefault();
 
-    const user = await loginService.login({ username, password });
-    setUser(user);
-    window.localStorage.setItem("loggedUser", JSON.stringify(user));
+    try {
+      const user = await loginService.login({ username, password });
+      setUser(user);
+      window.localStorage.setItem("loggedUser", JSON.stringify(user));
+    } catch (error) {
+      setMessage({ content: error.response.data.error, type: "failed" });
+      setTimeout(() => {
+        setMessage({ content: "", type: "" });
+      }, 3500);
+    }
   }
 
   function handleLogout() {
@@ -45,14 +54,23 @@ const App = () => {
           password={password}
           setPassword={setPassword}
           handleLogin={handleLogin}
+          message={message.content}
+          type={message.type}
         />
       )}
       {user && (
         <>
           <h2>blogs</h2>
+          {message && (
+            <Notification message={message?.content} type={message?.type} />
+          )}
           <p>{user.name} logged in</p>
           <button onClick={handleLogout}>log out</button>
-          <AddNewBlog token={user.token} />
+          <AddNewBlog
+            token={user.token}
+            onSetMessage={setMessage}
+            onSetBlogs={setBlogs}
+          />
           {blogs.map((blog) => (
             <Blog key={blog.id} blog={blog} />
           ))}

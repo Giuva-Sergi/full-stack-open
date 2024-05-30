@@ -1,7 +1,7 @@
 import { useState } from "react";
 import blogService from "../services/blogs";
 
-function AddNewBlog({ token }) {
+function AddNewBlog({ token, onSetMessage, onSetBlogs }) {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
@@ -18,11 +18,21 @@ function AddNewBlog({ token }) {
 
     try {
       const response = await blogService.create(newBlog);
+
+      onSetMessage({
+        content: `a new blog ${title} by ${author} added`,
+        type: "success",
+      });
+      onSetBlogs((prevBlogs) => [...prevBlogs, response]);
       setAuthor("");
       setTitle("");
       setUrl("");
+
+      setTimeout(() => {
+        onSetMessage(null);
+      }, 3500);
     } catch (error) {
-      console.error(error);
+      console.error(error.response.data.error);
     }
   }
   return (
