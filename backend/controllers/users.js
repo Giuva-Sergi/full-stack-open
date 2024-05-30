@@ -14,7 +14,7 @@ usersRouter.post("/", async (req, res) => {
   const { username, name, password } = req.body;
 
   if (password.length < 8) {
-    res
+    return res
       .status(400)
       .send({ error: "required password must be at least 8 characters" });
   }
