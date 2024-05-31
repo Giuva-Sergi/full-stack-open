@@ -19,10 +19,7 @@ function AddNewBlog({ token, onSetMessage, onSetBlogs }) {
     try {
       const response = await blogService.create(newBlog);
 
-      onSetMessage({
-        content: `a new blog ${title} by ${author} added`,
-        type: "success",
-      });
+      onSetMessage(`a new blog ${title} by ${author} added`);
       onSetBlogs((prevBlogs) => [...prevBlogs, response]);
       setAuthor("");
       setTitle("");

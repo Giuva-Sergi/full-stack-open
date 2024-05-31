@@ -11,7 +11,7 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState({ content: "", type: "" });
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
@@ -32,10 +32,12 @@ const App = () => {
       const user = await loginService.login({ username, password });
       setUser(user);
       window.localStorage.setItem("loggedUser", JSON.stringify(user));
+      setUsername("");
+      setPassword("");
     } catch (error) {
-      setMessage({ content: error.response.data.error, type: "failed" });
+      setMessage(error.response.data.error);
       setTimeout(() => {
-        setMessage({ content: "", type: "" });
+        setMessage("");
       }, 3500);
     }
   }
@@ -54,16 +56,13 @@ const App = () => {
           password={password}
           setPassword={setPassword}
           handleLogin={handleLogin}
-          message={message.content}
-          type={message.type}
+          message={message}
         />
       )}
       {user && (
         <>
           <h2>blogs</h2>
-          {message && (
-            <Notification message={message?.content} type={message?.type} />
-          )}
+          {message && <Notification message={message} />}
           <p>{user.name} logged in</p>
           <button onClick={handleLogout}>log out</button>
           <AddNewBlog

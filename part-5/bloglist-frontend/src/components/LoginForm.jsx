@@ -7,12 +7,11 @@ function LoginForm({
   setPassword,
   handleLogin,
   message,
-  type,
 }) {
   return (
     <div>
       <h2>log in to application</h2>
-      {message && <Notification message={message} type={type} />}
+      {message && <Notification message={message} type="error" />}
       <form onSubmit={handleLogin}>
         <label htmlFor="username">username</label>
         <input
