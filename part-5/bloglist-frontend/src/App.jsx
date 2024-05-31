@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Blog from "./components/Blog";
 import AddNewBlog from "./components/AddNewBlog";
 import LoginForm from "./components/LoginForm";
 import Notification from "./components/Notification";
 import blogService from "./services/blogs";
 import loginService from "./services/login";
+import Toggler from "./components/Toggler";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -31,11 +32,15 @@ const App = () => {
     try {
       const user = await loginService.login({ username, password });
       setUser(user);
+      blogService.setToken(user.token);
+
       window.localStorage.setItem("loggedUser", JSON.stringify(user));
+
       setUsername("");
       setPassword("");
     } catch (error) {
       setMessage(error.response.data.error);
+
       setTimeout(() => {
         setMessage("");
       }, 3500);
@@ -65,11 +70,9 @@ const App = () => {
           {message && <Notification message={message} />}
           <p>{user.name} logged in</p>
           <button onClick={handleLogout}>log out</button>
-          <AddNewBlog
-            token={user.token}
-            onSetMessage={setMessage}
-            onSetBlogs={setBlogs}
-          />
+          <Toggler>
+            <AddNewBlog onSetMessage={setMessage} onSetBlogs={setBlogs} />
+          </Toggler>
           {blogs.map((blog) => (
             <Blog key={blog.id} blog={blog} />
           ))}

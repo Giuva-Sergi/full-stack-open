@@ -1,13 +1,3 @@
-// const style = {
-//   paddingBlock: "1rem",
-//   fontSize: "1.5rem",
-//   fontWeight: 600,
-//   color: "green",
-//   backgroundColor: "rgba(87, 177, 30, 0.3)",
-//   border: "5px solid green",
-//   borderRadius: "7px",
-// "rgba(244, 24, 24, 0.3)"
-// };
 function Notification({ message, type = "success" }) {
   const style = {
     paddingBlock: "1rem",

@@ -1,14 +1,13 @@
 import { useState } from "react";
 import blogService from "../services/blogs";
 
-function AddNewBlog({ token, onSetMessage, onSetBlogs }) {
+function AddNewBlog({ onSetMessage, onSetBlogs, toggleVisibility }) {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();
-    blogService.setToken(token);
 
     const newBlog = {
       title,
@@ -24,6 +23,8 @@ function AddNewBlog({ token, onSetMessage, onSetBlogs }) {
       setAuthor("");
       setTitle("");
       setUrl("");
+
+      toggleVisibility();
 
       setTimeout(() => {
         onSetMessage(null);
