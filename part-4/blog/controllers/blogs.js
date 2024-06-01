@@ -48,13 +48,13 @@ blogsRouter.put("/:id", async (request, response, next) => {
     const updatedBlog = await Blog.findByIdAndUpdate(request.params.id, blog, {
       runValidators: true,
       new: true,
-    });
+    }).populate("user", { username: 1, name: 1 });
 
     if (!updatedBlog) {
       return response.status(404).send({ message: "blog not found" });
     }
 
-    response.status(201).json(updatedBlog);
+    response.status(200).json(updatedBlog);
   } catch (error) {
     next(error);
   }

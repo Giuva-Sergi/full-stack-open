@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Blog from "./components/Blog";
 import AddNewBlog from "./components/AddNewBlog";
 import LoginForm from "./components/LoginForm";
@@ -14,6 +14,8 @@ const App = () => {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
 
+  console.log(blogs);
+
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
@@ -23,6 +25,7 @@ const App = () => {
 
     if (savedUser) {
       setUser(savedUser);
+      blogService.setToken(savedUser.token);
     }
   }, []);
 
@@ -31,8 +34,8 @@ const App = () => {
 
     try {
       const user = await loginService.login({ username, password });
-      setUser(user);
       blogService.setToken(user.token);
+      setUser(user);
 
       window.localStorage.setItem("loggedUser", JSON.stringify(user));
 
@@ -62,6 +65,14 @@ const App = () => {
     setBlogs(updatedBlogs);
   }
 
+  async function deleteBlog(blogID) {
+    await blogService.deleteBlog(blogID);
+
+    const updatedBlogs = blogs.filter((blog) => blog.id !== blogID);
+
+    setBlogs(updatedBlogs);
+  }
+
   return (
     <>
       {!user && (
@@ -86,7 +97,13 @@ const App = () => {
           {blogs
             .sort((a, b) => b.likes - a.likes)
             .map((blog) => (
-              <Blog key={blog.id} blog={blog} onUpdateLikes={updateLikes} />
+              <Blog
+                key={blog.id}
+                blog={blog}
+                onUpdateLikes={updateLikes}
+                onDeleteBlog={deleteBlog}
+                username={user.username}
+              />
             ))}
         </>
       )}

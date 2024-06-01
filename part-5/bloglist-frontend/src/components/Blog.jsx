@@ -1,8 +1,12 @@
 import { useState } from "react";
 
-function Blog({ blog, onUpdateLikes }) {
+function Blog({ blog, onUpdateLikes, onDeleteBlog, username }) {
   const { title, author, url, likes, id } = blog;
   const [isExpanded, setIsExpanded] = useState(false);
+
+  const isCurrentUser = blog.user.username
+    ? blog.user.username === username
+    : false;
 
   return (
     <div
@@ -34,6 +38,9 @@ function Blog({ blog, onUpdateLikes }) {
               </span>
             </p>
             <p>{author}</p>
+            {isCurrentUser && (
+              <button onClick={() => onDeleteBlog(id)}>delete</button>
+            )}
           </div>
         </>
       )}
