@@ -4,9 +4,6 @@ function Blog({ blog, onUpdateLikes }) {
   const { title, author, url, likes, id } = blog;
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // console.log("BLOG ID", id);
-  // console.log("USER ID", userID);
-
   return (
     <div
       style={{
