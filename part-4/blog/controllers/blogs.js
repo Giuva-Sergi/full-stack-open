@@ -25,7 +25,7 @@ blogsRouter.post(
 
       const payload = {
         ...request.body,
-        user: user._id,
+        user,
       };
 
       const blog = new Blog(payload);
