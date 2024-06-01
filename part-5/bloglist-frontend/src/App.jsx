@@ -52,6 +52,16 @@ const App = () => {
     setUser(null);
   }
 
+  async function updateLikes(blogID, newObject) {
+    const updatedBlog = await blogService.update(blogID, newObject);
+
+    const updatedBlogs = blogs.map((blog) =>
+      blog.id === updatedBlog.id ? updatedBlog : blog
+    );
+
+    setBlogs(updatedBlogs);
+  }
+
   return (
     <>
       {!user && (
@@ -74,7 +84,7 @@ const App = () => {
             <AddNewBlog onSetMessage={setMessage} onSetBlogs={setBlogs} />
           </Toggler>
           {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} />
+            <Blog key={blog.id} blog={blog} onUpdateLikes={updateLikes} />
           ))}
         </>
       )}

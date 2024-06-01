@@ -1,10 +1,12 @@
 import { useState } from "react";
 
-function Blog({ blog }) {
-  const { title, author, url, likes } = blog;
+function Blog({ blog, onUpdateLikes }) {
+  const { title, author, url, likes, id } = blog;
   const [isExpanded, setIsExpanded] = useState(false);
 
-  console.log(likes);
+  // console.log("BLOG ID", id);
+  // console.log("USER ID", userID);
+
   return (
     <div
       style={{
@@ -15,10 +17,10 @@ function Blog({ blog }) {
       }}
     >
       <p>
-        {blog.title}{" "}
+        {title}{" "}
         <span>
           <button onClick={() => setIsExpanded(!isExpanded)}>
-            {isExpanded ? "view" : "hide"}
+            {isExpanded ? "hide" : "view"}
           </button>
         </span>
       </p>
@@ -26,7 +28,14 @@ function Blog({ blog }) {
         <>
           <div>
             <p>{url}</p>
-            <p>likes {likes}</p>
+            <p>
+              likes {likes}
+              <span>
+                <button onClick={() => onUpdateLikes(id, { likes: likes + 1 })}>
+                  like
+                </button>
+              </span>
+            </p>
             <p>{author}</p>
           </div>
         </>

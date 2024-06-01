@@ -49,9 +49,11 @@ blogsRouter.put("/:id", async (request, response, next) => {
       runValidators: true,
       new: true,
     });
+
     if (!updatedBlog) {
-      response.status(404).send({ message: "blog not found" });
+      return response.status(404).send({ message: "blog not found" });
     }
+
     response.status(201).json(updatedBlog);
   } catch (error) {
     next(error);
