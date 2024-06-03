@@ -1,10 +1,26 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 import blogService from "../services/blogs";
 
 function AddNewBlog({ onSetMessage, onSetBlogs, toggleVisibility }) {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
+
+  async function createBlog(newBlog) {
+    try {
+      const response = await blogService.create(newBlog);
+
+      onSetMessage(`a new blog ${title} by ${author} added`);
+      onSetBlogs((prevBlogs) => [...prevBlogs, response]);
+
+      setTimeout(() => {
+        onSetMessage(null);
+      }, 3500);
+    } catch (error) {
+      console.error(error.response.data.error);
+    }
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -15,23 +31,8 @@ function AddNewBlog({ onSetMessage, onSetBlogs, toggleVisibility }) {
       url,
     };
 
-    try {
-      const response = await blogService.create(newBlog);
-
-      onSetMessage(`a new blog ${title} by ${author} added`);
-      onSetBlogs((prevBlogs) => [...prevBlogs, response]);
-      setAuthor("");
-      setTitle("");
-      setUrl("");
-
-      toggleVisibility();
-
-      setTimeout(() => {
-        onSetMessage(null);
-      }, 3500);
-    } catch (error) {
-      console.error(error.response.data.error);
-    }
+    createBlog(newBlog);
+    toggleVisibility();
   }
   return (
     <div>
@@ -63,5 +64,11 @@ function AddNewBlog({ onSetMessage, onSetBlogs, toggleVisibility }) {
     </div>
   );
 }
+
+AddNewBlog.propTypes = {
+  onSetBlogs: PropTypes.func.isRequired,
+  onSetMessage: PropTypes.func.isRequired,
+  toggleVisibility: PropTypes.func.isRequired,
+};
 
 export default AddNewBlog;

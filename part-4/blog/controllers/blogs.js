@@ -25,7 +25,7 @@ blogsRouter.post(
 
       const payload = {
         ...request.body,
-        user,
+        user: user._id,
       };
 
       const blog = new Blog(payload);
@@ -34,7 +34,11 @@ blogsRouter.post(
       user.blogs = [...user.blogs, savedBlog];
       await user.save();
 
-      response.status(201).json(savedBlog);
+      const populatedBlog = await savedBlog.populate("user", {
+        username: 1,
+        name: 1,
+      });
+      response.status(201).json(populatedBlog);
     } catch (error) {
       next(error);
     }
