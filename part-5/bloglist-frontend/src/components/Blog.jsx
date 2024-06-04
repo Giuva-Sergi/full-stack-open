@@ -10,6 +10,7 @@ function Blog({ blog, onUpdateLikes, onDeleteBlog, username }) {
 
   return (
     <div
+      className="blog"
       style={{
         border: "2px solid black",
         padding: "0.5rem",
@@ -17,19 +18,18 @@ function Blog({ blog, onUpdateLikes, onDeleteBlog, username }) {
         marginBlock: "0.5rem",
       }}
     >
-      <p>
-        {title}{" "}
-        <span>
-          <button onClick={() => setIsExpanded(!isExpanded)}>
-            {isExpanded ? "hide" : "view"}
-          </button>
-        </span>
-      </p>
+      <p className="title">{title}</p>
+      <p className="author">{author}</p>
+      <span>
+        <button onClick={() => setIsExpanded(!isExpanded)}>
+          {isExpanded ? "hide" : "view"}
+        </button>
+      </span>
       {isExpanded && (
         <>
           <div>
-            <p>{url}</p>
-            <p>
+            <p className="url">{url}</p>
+            <p className="likes">
               likes {likes}
               <span>
                 <button onClick={() => onUpdateLikes(id, { likes: likes + 1 })}>
@@ -37,7 +37,6 @@ function Blog({ blog, onUpdateLikes, onDeleteBlog, username }) {
                 </button>
               </span>
             </p>
-            <p>{author}</p>
             {isCurrentUser && (
               <button onClick={() => onDeleteBlog(id)}>delete</button>
             )}

@@ -68,7 +68,6 @@ function AddNewBlog({ onSetMessage, onSetBlogs, toggleVisibility }) {
 AddNewBlog.propTypes = {
   onSetBlogs: PropTypes.func.isRequired,
   onSetMessage: PropTypes.func.isRequired,
-  toggleVisibility: PropTypes.func.isRequired,
 };
 
 export default AddNewBlog;
