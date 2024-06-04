@@ -52,8 +52,6 @@ test("url and likes are shown only if button is clicked", async () => {
   expect(urlEl).toBeNull();
   expect(likesEl).toBeNull();
 
-  screen.debug(likesEl);
-
   const user = userEvent.setup();
 
   await user.click(button);
@@ -61,4 +59,35 @@ test("url and likes are shown only if button is clicked", async () => {
   // after clicking elements are not null
   expect(urlEl).toBeDefined();
   expect(likesEl).toBeDefined();
+});
+
+test("if like button is clicked twice, event handler is called twice", async () => {
+  const blog = {
+    author: "Test author",
+    title: "Test title",
+    url: "https://test.com",
+    user: {
+      username: "testUsername",
+      name: "Test name",
+    },
+  };
+
+  const numberOfCalls = 2;
+
+  const mockHandler = vi.fn();
+
+  render(<Blog blog={blog} onUpdateLikes={mockHandler} />);
+
+  const viewButton = screen.getByText("view");
+
+  const user = userEvent.setup();
+  await user.click(viewButton);
+
+  const likeBtn = screen.getByText("like");
+
+  for (let i = 0; i < numberOfCalls; i++) {
+    await user.click(likeBtn);
+  }
+
+  expect(mockHandler.mock.calls).toHaveLength(2);
 });

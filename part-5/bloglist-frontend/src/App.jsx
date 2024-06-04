@@ -63,6 +63,22 @@ const App = () => {
     setBlogs(updatedBlogs);
   }
 
+  async function createBlog(newBlog) {
+    try {
+      const response = await blogService.create(newBlog);
+      const message = `a new blog ${response.title} by ${response.author} added`;
+
+      setMessage(message);
+      setBlogs((prevBlogs) => [...prevBlogs, response]);
+
+      setTimeout(() => {
+        setMessage(null);
+      }, 3500);
+    } catch (error) {
+      console.error(error.response.data.error);
+    }
+  }
+
   async function deleteBlog(blogID) {
     await blogService.deleteBlog(blogID);
 
@@ -90,7 +106,7 @@ const App = () => {
           <p>{user.name} logged in</p>
           <button onClick={handleLogout}>log out</button>
           <Toggler>
-            <AddNewBlog onSetMessage={setMessage} onSetBlogs={setBlogs} />
+            <AddNewBlog onCreateBlog={createBlog} />
           </Toggler>
           {blogs
             .sort((a, b) => b.likes - a.likes)

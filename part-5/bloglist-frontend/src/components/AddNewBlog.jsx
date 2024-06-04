@@ -1,26 +1,10 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
-import blogService from "../services/blogs";
 
-function AddNewBlog({ onSetMessage, onSetBlogs, toggleVisibility }) {
+function AddNewBlog({ onCreateBlog, toggleVisibility }) {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
-
-  async function createBlog(newBlog) {
-    try {
-      const response = await blogService.create(newBlog);
-
-      onSetMessage(`a new blog ${title} by ${author} added`);
-      onSetBlogs((prevBlogs) => [...prevBlogs, response]);
-
-      setTimeout(() => {
-        onSetMessage(null);
-      }, 3500);
-    } catch (error) {
-      console.error(error.response.data.error);
-    }
-  }
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -31,7 +15,7 @@ function AddNewBlog({ onSetMessage, onSetBlogs, toggleVisibility }) {
       url,
     };
 
-    createBlog(newBlog);
+    onCreateBlog(newBlog);
     toggleVisibility();
   }
   return (
@@ -44,6 +28,7 @@ function AddNewBlog({ onSetMessage, onSetBlogs, toggleVisibility }) {
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
+          placeholder="write title here"
         />
         author:
         <input
@@ -51,6 +36,7 @@ function AddNewBlog({ onSetMessage, onSetBlogs, toggleVisibility }) {
           type="text"
           value={author}
           onChange={(e) => setAuthor(e.target.value)}
+          placeholder="write author here"
         />
         url:
         <input
@@ -58,6 +44,7 @@ function AddNewBlog({ onSetMessage, onSetBlogs, toggleVisibility }) {
           type="text"
           value={url}
           onChange={(e) => setUrl(e.target.value)}
+          placeholder="write url here"
         />
         <button type="submit">create</button>
       </form>
@@ -66,8 +53,7 @@ function AddNewBlog({ onSetMessage, onSetBlogs, toggleVisibility }) {
 }
 
 AddNewBlog.propTypes = {
-  onSetBlogs: PropTypes.func.isRequired,
-  onSetMessage: PropTypes.func.isRequired,
+  onCreateBlog: PropTypes.func.isRequired,
 };
 
 export default AddNewBlog;
