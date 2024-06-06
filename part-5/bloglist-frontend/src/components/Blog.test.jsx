@@ -56,7 +56,7 @@ test("url and likes are shown only if button is clicked", async () => {
 
   await user.click(button);
 
-  // after clicking elements are not null
+  // after clicking elements are defined
   expect(urlEl).toBeDefined();
   expect(likesEl).toBeDefined();
 });
