@@ -4,7 +4,7 @@ function Blog({ blog, onUpdateLikes, onDeleteBlog, username }) {
   const { title, author, url, likes, id } = blog;
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const isCurrentUser = blog.user.username
+  const isCurrentUser = blog?.user?.username
     ? blog.user.username === username
     : false;
 
