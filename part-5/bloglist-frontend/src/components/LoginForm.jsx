@@ -18,6 +18,7 @@ function LoginForm({
         <input
           type="text"
           id="username"
+          data-testId="username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
@@ -25,6 +26,7 @@ function LoginForm({
         <input
           type="password"
           id="password"
+          data-testId="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
