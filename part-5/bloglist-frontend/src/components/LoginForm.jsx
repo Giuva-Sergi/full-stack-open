@@ -18,7 +18,7 @@ function LoginForm({
         <input
           type="text"
           id="username"
-          data-testId="username"
+          data-testid="username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
@@ -26,7 +26,7 @@ function LoginForm({
         <input
           type="password"
           id="password"
-          data-testId="password"
+          data-testid="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
@@ -42,7 +42,6 @@ LoginForm.propTypes = {
   setUsername: PropTypes.func.isRequired,
   setPassword: PropTypes.func.isRequired,
   handleLogin: PropTypes.func.isRequired,
-  message: PropTypes.string.isRequired,
 };
 
 export default LoginForm;
