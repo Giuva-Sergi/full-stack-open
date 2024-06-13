@@ -1,5 +1,5 @@
 const { test, expect, beforeEach, describe } = require("@playwright/test");
-const loginWith = require("./helper");
+const { loginWith, createBlog } = require("./helper");
 
 describe("Blog app", () => {
   beforeEach(async ({ page, request }) => {
@@ -44,6 +44,27 @@ describe("Blog app", () => {
         "background-color",
         "rgba(244, 24, 24, 0.3)"
       );
+    });
+  });
+
+  describe("when logged in", () => {
+    beforeEach(async ({ page }) => {
+      await loginWith(page, "testUser", "testPassword");
+    });
+
+    test("a new blog can be created", async ({ page }) => {
+      await createBlog(
+        page,
+        "some title here...",
+        "some author here...",
+        "some url here..."
+      );
+
+      const titleLoc = await page.locator(".title");
+      const authorLoc = await page.locator(".author");
+
+      await expect(titleLoc.getByText("some title here...")).toBeVisible();
+      await expect(authorLoc.getByText("some author here...")).toBeVisible();
     });
   });
 });
