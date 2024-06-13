@@ -4,6 +4,7 @@ const {
   createBlog,
   createUser,
   checkSorted,
+  formatLike,
   blogs,
 } = require("./helper");
 const { timeout } = require("../playwright.config");
@@ -62,8 +63,8 @@ describe("Blog app", () => {
         "some url here..."
       );
 
-      const titleLoc = await page.locator(".title");
-      const authorLoc = await page.locator(".author");
+      const titleLoc = page.locator(".title");
+      const authorLoc = page.locator(".author");
 
       await expect(titleLoc.getByText("some title here...")).toBeVisible();
       await expect(authorLoc.getByText("some author here...")).toBeVisible();
@@ -85,10 +86,7 @@ describe("Blog app", () => {
 
         await page.waitForTimeout(1000);
 
-        const likesLocator = page.locator(".likes");
-        const likesText = await likesLocator.textContent();
-        const likesMatch = likesText.match(/likes (\d+)/);
-        const likesCount = likesMatch ? parseInt(likesMatch[1], 10) : NaN;
+        const likesCount = await formatLike(page.locator(".likes"));
 
         await expect(likesCount).toBe(1);
       });
@@ -157,9 +155,7 @@ describe("Blog app", () => {
         const blogElement = blogs[i];
         const likesLocator = await blogElement.$(".likes");
 
-        const likesText = await likesLocator.textContent();
-        const likesMatch = likesText.match(/likes (\d+)/);
-        const likesCount = likesMatch ? parseInt(likesMatch[1], 10) : NaN;
+        const likesCount = await formatLike(likesLocator);
 
         likes.push(likesCount);
       }

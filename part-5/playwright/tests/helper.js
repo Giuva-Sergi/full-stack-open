@@ -38,6 +38,14 @@ const checkSorted = (arr) => {
   return false;
 };
 
+const formatLike = async (likesLocator) => {
+  const likesText = await likesLocator.textContent();
+  const likesMatch = likesText.match(/likes (\d+)/);
+  const likesCount = likesMatch ? parseInt(likesMatch[1], 10) : NaN;
+
+  return likesCount;
+};
+
 const blogs = [
   {
     title: "Adventures in AI",
@@ -71,4 +79,11 @@ const blogs = [
   },
 ];
 
-module.exports = { loginWith, createBlog, createUser, checkSorted, blogs };
+module.exports = {
+  loginWith,
+  createBlog,
+  createUser,
+  checkSorted,
+  formatLike,
+  blogs,
+};
