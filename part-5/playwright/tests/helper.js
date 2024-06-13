@@ -29,6 +29,15 @@ const createUser = async (request, name, username, password) => {
   });
 };
 
+const checkSorted = (arr) => {
+  for (let i = 0; i < arr.length - 1; i++) {
+    if (arr[i] > arr[i + 1]) {
+      return true;
+    }
+  }
+  return false;
+};
+
 const blogs = [
   {
     title: "Adventures in AI",
@@ -62,4 +71,4 @@ const blogs = [
   },
 ];
 
-module.exports = { loginWith, createBlog, createUser, blogs };
+module.exports = { loginWith, createBlog, createUser, checkSorted, blogs };

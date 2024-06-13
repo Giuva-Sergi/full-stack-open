@@ -21,7 +21,10 @@ function Blog({ blog, onUpdateLikes, onDeleteBlog, username }) {
       <p className="title">{title}</p>
       <p className="author">{author}</p>
       <span>
-        <button onClick={() => setIsExpanded(!isExpanded)}>
+        <button
+          onClick={() => setIsExpanded(!isExpanded)}
+          data-testid="button-view"
+        >
           {isExpanded ? "hide" : "view"}
         </button>
       </span>
@@ -32,7 +35,10 @@ function Blog({ blog, onUpdateLikes, onDeleteBlog, username }) {
             <p className="likes">
               likes {likes}
               <span>
-                <button onClick={() => onUpdateLikes(id, { likes: likes + 1 })}>
+                <button
+                  onClick={() => onUpdateLikes(id, { likes: likes + 1 })}
+                  data-testid="button-like"
+                >
                   like
                 </button>
               </span>

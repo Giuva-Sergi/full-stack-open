@@ -1,5 +1,12 @@
 const { test, expect, beforeEach, describe } = require("@playwright/test");
-const { loginWith, createBlog, createUser, blogs } = require("./helper");
+const {
+  loginWith,
+  createBlog,
+  createUser,
+  checkSorted,
+  blogs,
+} = require("./helper");
+const { timeout } = require("../playwright.config");
 
 describe("Blog app", () => {
   beforeEach(async ({ page, request }) => {
@@ -132,10 +139,32 @@ describe("Blog app", () => {
       await page.reload();
     });
 
-    test.only("blogs are ordered by descending number of likes", async ({
+    test("blogs are ordered by descending number of likes", async ({
       page,
     }) => {
-      await expect(page.getByText("Art in the Digital Age")).toBeVisible();
+      await page.waitForTimeout(1000);
+
+      const viewButtons = await page.$$('[data-testid="button-view"]');
+      const blogs = await page.$$(".blog");
+
+      const likes = [];
+
+      for (let i = 0; i < blogs.length; i++) {
+        await viewButtons[i].click();
+
+        await page.waitForTimeout(1000);
+
+        const blogElement = blogs[i];
+        const likesLocator = await blogElement.$(".likes");
+
+        const likesText = await likesLocator.textContent();
+        const likesMatch = likesText.match(/likes (\d+)/);
+        const likesCount = likesMatch ? parseInt(likesMatch[1], 10) : NaN;
+
+        likes.push(likesCount);
+      }
+
+      await expect(checkSorted(likes)).toBe(true);
     });
   });
 });
