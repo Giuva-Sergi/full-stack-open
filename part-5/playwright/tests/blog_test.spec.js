@@ -66,5 +66,30 @@ describe("Blog app", () => {
       await expect(titleLoc.getByText("some title here...")).toBeVisible();
       await expect(authorLoc.getByText("some author here...")).toBeVisible();
     });
+
+    describe("and a blog is present", () => {
+      beforeEach(async ({ page }) => {
+        await createBlog(
+          page,
+          "some title here...",
+          "some author here...",
+          "some url here..."
+        );
+      });
+
+      test.only("the blog can be liked", async ({ page }) => {
+        await page.getByRole("button", { name: "view" }).click();
+        await page.getByRole("button", { name: "like" }).click();
+
+        await page.waitForTimeout(1000);
+
+        const likesLocator = page.locator(".likes");
+        const likesText = await likesLocator.textContent();
+        const likesMatch = likesText.match(/likes (\d+)/);
+        const likesCount = likesMatch ? parseInt(likesMatch[1], 10) : NaN;
+
+        await expect(likesCount).toBe(1);
+      });
+    });
   });
 });
