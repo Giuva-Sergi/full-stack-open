@@ -1,16 +1,11 @@
 const { test, expect, beforeEach, describe } = require("@playwright/test");
-const { loginWith, createBlog } = require("./helper");
+const { loginWith, createBlog, createUser } = require("./helper");
 
 describe("Blog app", () => {
   beforeEach(async ({ page, request }) => {
     await request.post("api/tests/reset");
-    await request.post("api/users", {
-      data: {
-        name: "Test User",
-        username: "testUser",
-        password: "testPassword",
-      },
-    });
+    await createUser(request, "Test User", "testUser", "testPassword");
+    await createUser(request, "Test User 2", "testUser2", "testPassword2");
 
     await page.goto("/");
   });
@@ -77,7 +72,7 @@ describe("Blog app", () => {
         );
       });
 
-      test.only("the blog can be liked", async ({ page }) => {
+      test("the blog can be liked", async ({ page }) => {
         await page.getByRole("button", { name: "view" }).click();
         await page.getByRole("button", { name: "like" }).click();
 
@@ -89,6 +84,33 @@ describe("Blog app", () => {
         const likesCount = likesMatch ? parseInt(likesMatch[1], 10) : NaN;
 
         await expect(likesCount).toBe(1);
+      });
+
+      test("the blog can be deleted", async ({ page }) => {
+        await page.getByRole("button", { name: "view" }).click();
+        await page.getByRole("button", { name: "delete" }).click();
+
+        await page.waitForTimeout(1000);
+
+        const blog = page.locator(".blog");
+
+        await expect(blog).not.toBeVisible();
+      });
+
+      test("only the user who created the blog can delete it", async ({
+        page,
+      }) => {
+        // log out and log in with another user
+        await page.getByRole("button", { name: "log out" }).click();
+        await expect(page.getByText("log in to application")).toBeVisible();
+
+        await loginWith(page, "testUser2", "testPassword2");
+        await expect(page.getByText("Test User 2 logged in")).toBeVisible();
+
+        await page.getByRole("button", { name: "view" }).click();
+        const deleteButton = await page.getByRole("button", { name: "delete" });
+
+        await expect(deleteButton).not.toBeVisible();
       });
     });
   });
