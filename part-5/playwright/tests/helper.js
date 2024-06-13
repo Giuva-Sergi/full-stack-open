@@ -2,6 +2,12 @@ const loginWith = async (page, username, password) => {
   await page.getByTestId("username").fill(username);
   await page.getByTestId("password").fill(password);
   await page.getByRole("button", { name: "login" }).click();
+
+  const response = await page.waitForResponse((response) =>
+    response.url().includes("/api/login")
+  );
+  const responseBody = await response.json();
+  return responseBody.token;
 };
 
 const createBlog = async (page, title, author, url) => {
@@ -23,4 +29,37 @@ const createUser = async (request, name, username, password) => {
   });
 };
 
-module.exports = { loginWith, createBlog, createUser };
+const blogs = [
+  {
+    title: "Adventures in AI",
+    author: "Tech Guru",
+    url: "http://example.com/adventures-in-ai",
+    likes: 2,
+  },
+  {
+    title: "Exploring the Quantum Realm",
+    author: "Dr. Quantum",
+    url: "http://example.com/exploring-quantum-realm",
+    likes: 5,
+  },
+  {
+    title: "The Wonders of Space Travel",
+    author: "Cosmic Voyager",
+    url: "http://example.com/wonders-of-space-travel",
+    likes: 8,
+  },
+  {
+    title: "Gastronomy Galore",
+    author: "Chef Extraordinaire",
+    url: "http://example.com/gastronomy-galore",
+    likes: 1,
+  },
+  {
+    title: "Art in the Digital Age",
+    author: "Pixel Painter",
+    url: "http://example.com/art-digital-age",
+    likes: 3,
+  },
+];
+
+module.exports = { loginWith, createBlog, createUser, blogs };

@@ -1,5 +1,5 @@
 const { test, expect, beforeEach, describe } = require("@playwright/test");
-const { loginWith, createBlog, createUser } = require("./helper");
+const { loginWith, createBlog, createUser, blogs } = require("./helper");
 
 describe("Blog app", () => {
   beforeEach(async ({ page, request }) => {
@@ -112,6 +112,30 @@ describe("Blog app", () => {
 
         await expect(deleteButton).not.toBeVisible();
       });
+    });
+  });
+
+  describe("when various blogs are present", () => {
+    beforeEach(async ({ page, request }) => {
+      const token = await loginWith(page, "testUser", "testPassword");
+
+      for (const blog of blogs) {
+        await request.post("/api/blogs", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          data: blog,
+        });
+      }
+
+      // refresh page
+      await page.reload();
+    });
+
+    test.only("blogs are ordered by descending number of likes", async ({
+      page,
+    }) => {
+      await expect(page.getByText("Art in the Digital Age")).toBeVisible();
     });
   });
 });
