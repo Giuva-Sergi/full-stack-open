@@ -10,4 +10,4 @@ function Anecdote({ anecdote, onClickHandler }) {
   );
 }
 
-export default Anectode;
+export default Anecdote;
