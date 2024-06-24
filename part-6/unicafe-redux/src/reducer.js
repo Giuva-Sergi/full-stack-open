@@ -1,13 +1,10 @@
-import { createStore } from "redux";
-
 const initialState = {
   good: 0,
   ok: 0,
   bad: 0,
 };
 
-const counterReducer = (state = initialState, action) => {
-  console.log(action);
+const reducer = (state = initialState, action) => {
   switch (action.type) {
     case "GOOD":
       return {
@@ -36,6 +33,49 @@ const counterReducer = (state = initialState, action) => {
   }
 };
 
-const store = createStore(counterReducer);
+const increaseGood = () => {
+  return {
+    type: "GOOD",
+  };
+};
 
-export default counterReducer;
+const increaseBad = () => {
+  return {
+    type: "BAD",
+  };
+};
+
+const increaseOk = () => {
+  return {
+    type: "OK",
+  };
+};
+
+const reset = () => {
+  return {
+    type: "ZERO",
+  };
+};
+
+const getOk = (store) => {
+  return store.getState().ok;
+};
+
+const getGood = (store) => {
+  return store.getState().good;
+};
+
+const getBad = (store) => {
+  return store.getState().bad;
+};
+
+export {
+  reducer,
+  increaseBad,
+  increaseGood,
+  increaseOk,
+  reset,
+  getOk,
+  getGood,
+  getBad,
+};
