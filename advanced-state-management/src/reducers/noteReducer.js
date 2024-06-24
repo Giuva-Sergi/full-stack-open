@@ -1,6 +1,6 @@
-import { createStore } from "redux";
+import { generateId } from "../helpers/helpers";
 
-export default noteReducer = function (state = [], action) {
+const noteReducer = function (state = [], action) {
   switch (action.type) {
     case "NEW_NOTE":
       return [...state, action.payload];
@@ -15,29 +15,19 @@ export default noteReducer = function (state = [], action) {
   }
 };
 
-const store = createStore(noteReducer);
-
-const createNewNote = (payload) => {
-  return { type: "NEW_NOTE", payload };
+const createNewNote = (content) => {
+  return {
+    type: "NEW_NOTE",
+    payload: {
+      content,
+      important: false,
+      id: generateId(),
+    },
+  };
 };
 
-const toggleImportance = (payload) => {
-  return { type: "TOGGLE_IMPORTANCE", payload };
+const toggleImportance = (id) => {
+  return { type: "TOGGLE_IMPORTANCE", payload: { id } };
 };
 
-// store.dispatch(
-//   createNewNote({
-//     content: "the app state is in redux store",
-//     important: true,
-//     id: 1,
-//   })
-// );
-// store.dispatch(
-//   createNewNote({
-//     content: "state changes are made with actions",
-//     important: false,
-//     id: 2,
-//   })
-// );
-
-// store.dispatch(toggleImportance({ id: 2 }));
+export { noteReducer, createNewNote, toggleImportance };
