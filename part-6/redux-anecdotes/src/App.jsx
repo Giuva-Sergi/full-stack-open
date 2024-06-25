@@ -1,11 +1,11 @@
-import Anecdotes from "./Anecdotes";
-import CreateNewAnecdote from "./CreateNewAnecdote";
+import AnecdoteList from "./AnecdoteList";
+import AnecdoteForm from "./AnecdoteForm";
 
 const App = () => {
   return (
     <div>
-      <Anecdotes />
-      <CreateNewAnecdote />
+      <AnecdoteList />
+      <AnecdoteForm />
     </div>
   );
 };

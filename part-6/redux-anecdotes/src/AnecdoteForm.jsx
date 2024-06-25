@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { createAnecdote } from "./reducers/anecdoteReducer";
 
-function CreateNewAnecdote() {
+function AnecdoteForm() {
   const dispatch = useDispatch();
   function handleSubmit(e) {
     e.preventDefault();
@@ -22,4 +22,4 @@ function CreateNewAnecdote() {
   );
 }
 
-export default CreateNewAnecdote;
+export default AnecdoteForm;
