@@ -3,10 +3,13 @@ import Anecdote from "./Anecdote";
 import { vote } from "./reducers/anecdoteReducer";
 
 function Anecdotes() {
-  const anecdotes = useSelector((state) => state);
+  const anecdotes = useSelector((state) =>
+    state.sort((a, b) => b.votes - a.votes)
+  );
   const dispatch = useDispatch();
   return (
     <>
+      <h2>Anecdotes</h2>
       {anecdotes.map((anecdote) => (
         <Anecdote
           key={anecdote.id}
