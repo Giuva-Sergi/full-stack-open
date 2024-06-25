@@ -1,3 +1,4 @@
+import { generateId } from "../helpers/helpers";
 import noteReducer from "./noteReducer";
 import deepFreeze from "deep-freeze";
 
@@ -5,12 +6,12 @@ describe("noteReducer", () => {
   test("returns new state with action NEW_NOTE", () => {
     const state = [];
     const action = {
-      type: "NEW_NOTE",
+      type: "notes/createNewNote",
       payload: {
         content: "the app state is in redux store",
-        important: true,
-        id: 1,
       },
+      important: false,
+      id: generateId(),
     };
 
     deepFreeze(state);
@@ -35,10 +36,8 @@ describe("noteReducer", () => {
     ];
 
     const action = {
-      type: "TOGGLE_IMPORTANCE",
-      payload: {
-        id: 2,
-      },
+      type: "notes/toggleImportance",
+      payload: 2,
     };
 
     deepFreeze(state);
