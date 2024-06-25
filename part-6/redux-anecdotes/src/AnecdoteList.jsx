@@ -4,7 +4,7 @@ import { vote } from "./reducers/anecdoteReducer";
 
 function AnecdoteList() {
   const anecdotes = useSelector(({ anecdotes, filter }) =>
-    anecdotes
+    [...anecdotes]
       .filter((obj) => obj.content.toLowerCase().includes(filter))
       .sort((a, b) => b.votes - a.votes)
   );
