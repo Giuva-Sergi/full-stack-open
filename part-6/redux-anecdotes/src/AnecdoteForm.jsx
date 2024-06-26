@@ -9,7 +9,7 @@ function AnecdoteForm() {
     const content = e.target.content.value;
     e.target.content.value = "";
     dispatch(createAnecdote(content));
-    setNotification(dispatch, `You created '${content}'`, 5000);
+    dispatch(setNotification(`You created '${content}'`, 3));
   }
 
   return (
