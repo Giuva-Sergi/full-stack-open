@@ -28,13 +28,16 @@ const anecdoteSlice = createSlice({
     setAnecdotes(state, action) {
       return action.payload;
     },
+    // createAnecdote(state, action) {
+    //   const content = action.payload;
+    //   state.push({
+    //     content,
+    //     id: getId(),
+    //     votes: 0,
+    //   });
+    // },
     createAnecdote(state, action) {
-      const content = action.payload;
-      state.push({
-        content,
-        id: getId(),
-        votes: 0,
-      });
+      state.push(action.payload);
     },
     vote(state, action) {
       return state.map((obj) =>
