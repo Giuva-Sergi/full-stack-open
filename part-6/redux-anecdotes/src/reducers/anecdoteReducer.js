@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createNew, getAll } from "../services/anecdotes";
+import { createNew, getAll, updateVote } from "../services/anecdotes";
 
 const anecdotesAtStart = [
   "If it hurts, do it more often",
@@ -32,15 +32,10 @@ const anecdoteSlice = createSlice({
     addAnecdote(state, action) {
       state.push(action.payload);
     },
-    vote(state, action) {
-      return state.map((obj) =>
-        obj.id === action.payload ? { ...obj, votes: obj.votes + 1 } : obj
-      );
-    },
   },
 });
 
-export const { vote, setAnecdotes, addAnecdote } = anecdoteSlice.actions;
+export const { setAnecdotes, addAnecdote } = anecdoteSlice.actions;
 
 export const initializeData = () => {
   return async (dispatch) => {
@@ -53,6 +48,18 @@ export const createAnecdote = (content) => {
   return async (dispatch) => {
     const data = await createNew(content);
     dispatch(addAnecdote(data));
+  };
+};
+
+export const vote = (id, object) => {
+  return async (dispatch, getState) => {
+    const anecdotes = getState().anecdotes;
+    const data = await updateVote(id, object);
+    const updatedAnecdotes = anecdotes.map((obj) =>
+      obj.id === data.id ? { ...obj, votes: obj.votes + 1 } : obj
+    );
+
+    dispatch(setAnecdotes(updatedAnecdotes));
   };
 };
 

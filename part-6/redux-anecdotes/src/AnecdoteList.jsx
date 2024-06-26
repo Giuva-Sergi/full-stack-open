@@ -19,7 +19,7 @@ function AnecdoteList() {
           key={anecdote.id}
           anecdote={anecdote}
           onClickHandler={() => {
-            dispatch(vote(anecdote.id));
+            dispatch(vote(anecdote));
             setNotification(
               dispatch,
               `You voted '${
