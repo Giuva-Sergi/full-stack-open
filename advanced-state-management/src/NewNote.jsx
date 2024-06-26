@@ -1,6 +1,5 @@
 import { useDispatch } from "react-redux";
-import { createNewNote } from "./reducers/noteReducer";
-import { createNew } from "./services/notes";
+import { createNote } from "./reducers/noteReducer";
 
 function NewNote() {
   const dispatch = useDispatch();
@@ -8,8 +7,10 @@ function NewNote() {
     e.preventDefault();
     const content = e.target.note.value;
     e.target.note.value = "";
-    const newNote = await createNew(content);
-    dispatch(createNewNote(newNote));
+    // const newNote = await createNew(content);
+    // dispatch(createNewNote(newNote));
+    // using thunk middleware
+    dispatch(createNote(content));
   }
   return (
     <form onSubmit={addNote}>

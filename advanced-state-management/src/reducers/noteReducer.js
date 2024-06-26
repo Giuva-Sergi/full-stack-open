@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { generateId } from "../helpers/helpers";
+import { createNew, getNotes, updateNote } from "../services/notes";
 
 const initialState = [
   {
@@ -18,14 +19,6 @@ const noteSlice = createSlice({
   name: "notes",
   initialState: [],
   reducers: {
-    createNewNote(state, action) {
-      state.push(action.payload);
-    },
-    toggleImportance(state, action) {
-      return state.map((obj) =>
-        obj.id === action.payload ? { ...obj, important: !obj.important } : obj
-      );
-    },
     appendNote(state, action) {
       state.push(action.payload);
     },
@@ -65,6 +58,30 @@ const noteSlice = createSlice({
 //   return { type: "TOGGLE_IMPORTANCE", payload: { id } };
 // };
 
-export const { createNewNote, toggleImportance, appendNote, setNotes } =
-  noteSlice.actions;
+export const { appendNote, setNotes } = noteSlice.actions;
+
+export const initializeNotes = () => {
+  return async (dispatch) => {
+    const notes = await getNotes();
+    dispatch(setNotes(notes));
+  };
+};
+
+export const createNote = (content) => {
+  return async (dispatch) => {
+    const newNote = await createNew(content);
+    dispatch(appendNote(newNote));
+  };
+};
+
+export const toggleImportance = (id, note) => {
+  return async (dispatch, getState) => {
+    const updatedObj = await updateNote(id, note);
+    const notes = getState().notes;
+    const updatedNotes = notes.map((obj) =>
+      obj.id === updatedObj.id ? updatedObj : obj
+    );
+    dispatch(setNotes(updatedNotes));
+  };
+};
 export default noteSlice.reducer;
