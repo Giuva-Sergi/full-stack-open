@@ -60,6 +60,8 @@ const noteSlice = createSlice({
 
 export const { appendNote, setNotes } = noteSlice.actions;
 
+// THIS ARE THUNKS' MIDDLEWARE FOR HANDLING BOTH THE BACKEND AND FRONTEND LOGIC IN A SINGLE FUNCTION
+
 export const initializeNotes = () => {
   return async (dispatch) => {
     const notes = await getNotes();
