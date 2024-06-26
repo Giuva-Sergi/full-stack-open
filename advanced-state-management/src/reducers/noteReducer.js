@@ -16,26 +16,21 @@ const initialState = [
 
 const noteSlice = createSlice({
   name: "notes",
-  initialState,
+  initialState: [],
   reducers: {
-    createNewNote: {
-      reducer: (state, action) => {
-        state.push(action.payload);
-      },
-      prepare: (content) => {
-        return {
-          payload: {
-            content,
-            important: false,
-            id: generateId(),
-          },
-        };
-      },
+    createNewNote(state, action) {
+      state.push(action.payload);
     },
     toggleImportance(state, action) {
       return state.map((obj) =>
         obj.id === action.payload ? { ...obj, important: !obj.important } : obj
       );
+    },
+    appendNote(state, action) {
+      state.push(action.payload);
+    },
+    setNotes(state, action) {
+      return action.payload;
     },
   },
 });
@@ -70,5 +65,6 @@ const noteSlice = createSlice({
 //   return { type: "TOGGLE_IMPORTANCE", payload: { id } };
 // };
 
-export const { createNewNote, toggleImportance } = noteSlice.actions;
+export const { createNewNote, toggleImportance, appendNote, setNotes } =
+  noteSlice.actions;
 export default noteSlice.reducer;

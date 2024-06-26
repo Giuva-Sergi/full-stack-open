@@ -5,7 +5,7 @@ import { setNotification } from "./reducers/notificationReducer";
 
 function AnecdoteList() {
   const anecdotes = useSelector(({ anecdotes, filter }) =>
-    [...anecdotes]
+    anecdotes
       .filter((obj) => obj.content.toLowerCase().includes(filter))
       .sort((a, b) => b.votes - a.votes)
   );
