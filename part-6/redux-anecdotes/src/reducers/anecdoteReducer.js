@@ -51,10 +51,10 @@ export const createAnecdote = (content) => {
   };
 };
 
-export const vote = (id, object) => {
+export const vote = (object) => {
   return async (dispatch, getState) => {
     const anecdotes = getState().anecdotes;
-    const data = await updateVote(id, object);
+    const data = await updateVote(object);
     const updatedAnecdotes = anecdotes.map((obj) =>
       obj.id === data.id ? { ...obj, votes: obj.votes + 1 } : obj
     );

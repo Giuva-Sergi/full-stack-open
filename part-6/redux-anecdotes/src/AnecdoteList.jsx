@@ -20,7 +20,7 @@ function AnecdoteList() {
           anecdote={anecdote}
           onClickHandler={() => {
             dispatch(vote(anecdote));
-            dispatch(setNotification(`You voted '${anecdote.content}'`, 3));
+            dispatch(setNotification(`You voted '${anecdote.content}'`, 5));
           }}
         />
       ))}
