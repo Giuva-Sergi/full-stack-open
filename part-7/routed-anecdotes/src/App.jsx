@@ -1,7 +1,9 @@
+/* eslint-disable react/jsx-no-target-blank */
+/* eslint-disable react/prop-types */
 import { useState } from "react";
-import { Link, Route, Routes } from "react-router-dom";
+import { Link, Route, Routes, useMatch, useNavigate } from "react-router-dom";
 
-const Menu = () => {
+const Menu = ({ notification }) => {
   const padding = {
     paddingRight: 5,
   };
@@ -16,6 +18,7 @@ const Menu = () => {
       <Link to="/about" style={padding}>
         about
       </Link>
+      <p style={padding}>{notification}</p>
     </div>
   );
 };
@@ -25,7 +28,9 @@ const AnecdoteList = ({ anecdotes }) => (
     <h2>Anecdotes</h2>
     <ul>
       {anecdotes.map((anecdote) => (
-        <li key={anecdote.id}>{anecdote.content}</li>
+        <li key={anecdote.id}>
+          <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
+        </li>
       ))}
     </ul>
   </div>
@@ -113,6 +118,23 @@ const CreateNew = (props) => {
   );
 };
 
+const Anecdote = ({ anecdote }) => {
+  return (
+    <div>
+      <h2>
+        {anecdote.content} by {anecdote.author}
+      </h2>
+      <p>has {anecdote.votes} votes</p>
+      <p>
+        for more info see{" "}
+        <a href={anecdote.info} target="_blank">
+          {anecdote.info}
+        </a>
+      </p>
+    </div>
+  );
+};
+
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
     {
@@ -132,11 +154,20 @@ const App = () => {
   ]);
 
   const [notification, setNotification] = useState("");
+  const navigate = useNavigate();
 
   const addNew = (anecdote) => {
     anecdote.id = Math.round(Math.random() * 10000);
     setAnecdotes(anecdotes.concat(anecdote));
+    navigate("/anecdotes");
+    setNotification(`a new anecdote ${anecdote.content} created!`);
+    setTimeout(() => {
+      setNotification("");
+    }, 5000);
   };
+
+  const match = useMatch("/anecdotes/:id");
+  const id = match ? Number(match.params.id) : null;
 
   const anecdoteById = (id) => anecdotes.find((a) => a.id === id);
 
@@ -154,12 +185,16 @@ const App = () => {
   return (
     <div>
       <h1>Software anecdotes</h1>
-      <Menu />
+      <Menu notification={notification} />
       <Routes>
         <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />
         <Route
           path="/anecdotes"
           element={<AnecdoteList anecdotes={anecdotes} />}
+        />
+        <Route
+          path="/anecdotes/:id"
+          element={<Anecdote anecdote={anecdoteById(id)} />}
         />
         <Route path="/create" element={<CreateNew addNew={addNew} />} />
         <Route path="/about" element={<About />} />
