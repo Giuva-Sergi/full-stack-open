@@ -20,6 +20,8 @@ const App = () => {
       const anecdotes = queryClient.getQueryData(["anecdotes"]);
       queryClient.setQueryData(["anecdotes"], [...anecdotes, newAnecdote]);
     },
+    onError: () =>
+      setNotification("too short anecdote, must have length 5 or more", 5),
   });
 
   const mutationUpdate = useMutation({
