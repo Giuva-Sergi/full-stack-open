@@ -23,7 +23,15 @@ export const useCountry = (name) => {
     if (!name) return;
     async function fetchCountry() {
       const res = await axios.get(`${BASE_URL}/${name}`);
-      setCountry(res.data);
+      const countryData = await res.data;
+      console.log(countryData);
+      setCountry({
+        name: countryData.name.common,
+        capital: countryData.capital[0],
+        population: countryData.population,
+        flag: countryData.flags.png,
+        found: true,
+      });
     }
 
     fetchCountry();
