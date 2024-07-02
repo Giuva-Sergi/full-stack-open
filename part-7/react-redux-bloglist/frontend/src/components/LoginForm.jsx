@@ -1,15 +1,16 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Notification from "./Notification";
 import PropTypes from "prop-types";
+import { loginUser } from "../reducers/userReducer";
 
-function LoginForm({
-  username,
-  setUsername,
-  password,
-  setPassword,
-  handleLogin,
-}) {
+function LoginForm({ username, setUsername, password, setPassword }) {
   const { message } = useSelector((state) => state.notification);
+  const dispatch = useDispatch();
+
+  function handleLogin(e) {
+    e.preventDefault();
+    dispatch(loginUser({ username, password }));
+  }
 
   return (
     <div>
@@ -43,7 +44,6 @@ LoginForm.propTypes = {
   password: PropTypes.string.isRequired,
   setUsername: PropTypes.func.isRequired,
   setPassword: PropTypes.func.isRequired,
-  handleLogin: PropTypes.func.isRequired,
 };
 
 export default LoginForm;

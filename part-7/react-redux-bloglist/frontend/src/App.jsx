@@ -4,19 +4,18 @@ import AddNewBlog from "./components/AddNewBlog";
 import LoginForm from "./components/LoginForm";
 import Notification from "./components/Notification";
 import blogService from "./services/blogs";
-import loginService from "./services/login";
 import Toggler from "./components/Toggler";
 import { useDispatch, useSelector } from "react-redux";
-import { showMessage } from "./reducers/notificationReducer";
 import { initializeBlogs } from "./reducers/blogReducer";
+import { setUser, logOutUser } from "./reducers/userReducer";
 
 const App = () => {
-  const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const { message } = useSelector((state) => state.notification);
   const blogs = useSelector((state) => state.blogs);
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(initializeBlogs());
@@ -26,33 +25,14 @@ const App = () => {
     const savedUser = JSON.parse(window.localStorage.getItem("loggedUser"));
 
     if (savedUser) {
-      setUser(savedUser);
+      dispatch(setUser(savedUser));
       blogService.setToken(savedUser.token);
     }
   }, []);
 
-  async function handleLogin(e) {
-    e.preventDefault();
-
-    try {
-      const user = await loginService.login({ username, password });
-      blogService.setToken(user.token);
-      setUser(user);
-
-      window.localStorage.setItem("loggedUser", JSON.stringify(user));
-
-      setUsername("");
-      setPassword("");
-    } catch (error) {
-      dispatch(
-        showMessage({ message: error.response.data.error, type: "error" }, 3.5)
-      );
-    }
-  }
-
   function handleLogout() {
     window.localStorage.removeItem("loggedUser");
-    setUser(null);
+    dispatch(logOutUser());
   }
 
   return (
@@ -63,7 +43,6 @@ const App = () => {
           setUsername={setUsername}
           password={password}
           setPassword={setPassword}
-          handleLogin={handleLogin}
         />
       )}
       {user && (

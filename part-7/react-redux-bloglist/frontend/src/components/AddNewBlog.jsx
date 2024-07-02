@@ -1,5 +1,4 @@
 import { useState } from "react";
-import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import { createBlog } from "../reducers/blogReducer";
 import { showMessage } from "../reducers/notificationReducer";
@@ -20,6 +19,9 @@ function AddNewBlog() {
     const message = `a new blog ${title} by ${author} added`;
     dispatch(createBlog(newBlog));
     dispatch(showMessage({ message, type: "success" }, 3.5));
+    setTitle("");
+    setAuthor("");
+    setUrl("");
   }
   return (
     <div>
