@@ -11,6 +11,17 @@ function Blog({ blog, username }) {
     ? blog.user.username === username
     : false;
 
+  function handleLike() {
+    const { id } = blog;
+    const updated = {
+      ...blog,
+      likes: blog.likes + 1,
+      user: blog.user.id,
+    };
+
+    dispatch(likeBlog(id, updated));
+  }
+
   return (
     <div
       className="blog"
@@ -38,10 +49,7 @@ function Blog({ blog, username }) {
             <p className="likes">
               likes {likes}
               <span>
-                <button
-                  onClick={() => dispatch(likeBlog(id, { likes: likes + 1 }))}
-                  data-testid="button-like"
-                >
+                <button onClick={handleLike} data-testid="button-like">
                   like
                 </button>
               </span>
