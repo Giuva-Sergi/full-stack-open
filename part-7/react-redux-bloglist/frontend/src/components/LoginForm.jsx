@@ -1,15 +1,21 @@
 import { useDispatch, useSelector } from "react-redux";
 import Notification from "./Notification";
-import PropTypes from "prop-types";
-import { loginUser } from "../reducers/userReducer";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { loginUser } from "../reducers/loginReducer";
 
-function LoginForm({ username, setUsername, password, setPassword }) {
+function LoginForm() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
   const { message } = useSelector((state) => state.notification);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   function handleLogin(e) {
     e.preventDefault();
     dispatch(loginUser({ username, password }));
+    navigate("/");
   }
 
   return (
@@ -38,12 +44,5 @@ function LoginForm({ username, setUsername, password, setPassword }) {
     </div>
   );
 }
-
-LoginForm.propTypes = {
-  username: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired,
-  setUsername: PropTypes.func.isRequired,
-  setPassword: PropTypes.func.isRequired,
-};
 
 export default LoginForm;

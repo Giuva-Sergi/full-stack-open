@@ -3,8 +3,8 @@ import loginService from "../services/login";
 import blogService from "../services/blogs";
 import { showMessage } from "./notificationReducer";
 
-const userSlice = createSlice({
-  name: "user",
+const loginSlice = createSlice({
+  name: "login",
   initialState: null,
   reducers: {
     setUser: (state, action) => {
@@ -16,16 +16,17 @@ const userSlice = createSlice({
   },
 });
 
-export const { setUser, logOutUser } = userSlice.actions;
-export default userSlice.reducer;
+export const { setUser, logOutUser } = loginSlice.actions;
+export default loginSlice.reducer;
 
-export const loginUser = (credentials) => {
+export const loginUser = (credentials, callback) => {
   return async (dispatch) => {
     try {
       const user = await loginService.login(credentials);
       dispatch(setUser(user));
       blogService.setToken(user.token);
       window.localStorage.setItem("loggedUser", JSON.stringify(user));
+      if (callback) callback();
     } catch (error) {
       dispatch(
         showMessage({ message: error.response.data.error, type: "error" }, 3.5)
