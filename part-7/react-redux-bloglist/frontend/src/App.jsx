@@ -8,17 +8,18 @@ import loginService from "./services/login";
 import Toggler from "./components/Toggler";
 import { useDispatch, useSelector } from "react-redux";
 import { showMessage } from "./reducers/notificationReducer";
+import { initializeBlogs } from "./reducers/blogReducer";
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const { message } = useSelector((state) => state.notification);
+  const blogs = useSelector((state) => state.blogs);
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
+    dispatch(initializeBlogs());
   }, []);
 
   useEffect(() => {
@@ -61,19 +62,7 @@ const App = () => {
       blog.id === updatedBlog.id ? updatedBlog : blog
     );
 
-    setBlogs(updatedBlogs);
-  }
-
-  async function createBlog(newBlog) {
-    try {
-      const response = await blogService.create(newBlog);
-      const message = `a new blog ${response.title} by ${response.author} added`;
-
-      dispatch(showMessage({ message, type: "success" }, 3.5));
-      setBlogs((prevBlogs) => [...prevBlogs, response]);
-    } catch (error) {
-      console.error(error.response.data.error);
-    }
+    // setBlogs(updatedBlogs);
   }
 
   async function deleteBlog(blogID) {
@@ -81,7 +70,7 @@ const App = () => {
 
     const updatedBlogs = blogs.filter((blog) => blog.id !== blogID);
 
-    setBlogs(updatedBlogs);
+    // setBlogs(updatedBlogs);
   }
 
   return (
@@ -102,9 +91,9 @@ const App = () => {
           <p>{user.name} logged in</p>
           <button onClick={handleLogout}>log out</button>
           <Toggler>
-            <AddNewBlog onCreateBlog={createBlog} />
+            <AddNewBlog />
           </Toggler>
-          {blogs
+          {[...blogs]
             .sort((a, b) => b.likes - a.likes)
             .map((blog) => (
               <Blog

@@ -1,22 +1,25 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
+import { createBlog } from "../reducers/blogReducer";
+import { showMessage } from "../reducers/notificationReducer";
 
-function AddNewBlog({ onCreateBlog, toggleVisibility }) {
+function AddNewBlog() {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
+  const dispatch = useDispatch();
 
-  async function handleSubmit(e) {
+  function handleSubmit(e) {
     e.preventDefault();
-
     const newBlog = {
       title,
       author,
       url,
     };
-
-    onCreateBlog(newBlog);
-    toggleVisibility();
+    const message = `a new blog ${title} by ${author} added`;
+    dispatch(createBlog(newBlog));
+    dispatch(showMessage({ message, type: "success" }, 3.5));
   }
   return (
     <div>
@@ -51,9 +54,5 @@ function AddNewBlog({ onCreateBlog, toggleVisibility }) {
     </div>
   );
 }
-
-AddNewBlog.propTypes = {
-  onCreateBlog: PropTypes.func.isRequired,
-};
 
 export default AddNewBlog;
