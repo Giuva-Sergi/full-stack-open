@@ -1,8 +1,11 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { deleteBlog, likeBlog } from "../reducers/blogReducer";
 
-function Blog({ blog, onUpdateLikes, onDeleteBlog, username }) {
+function Blog({ blog, username }) {
   const { title, author, url, likes, id } = blog;
   const [isExpanded, setIsExpanded] = useState(false);
+  const dispatch = useDispatch();
 
   const isCurrentUser = blog?.user?.username
     ? blog.user.username === username
@@ -36,7 +39,7 @@ function Blog({ blog, onUpdateLikes, onDeleteBlog, username }) {
               likes {likes}
               <span>
                 <button
-                  onClick={() => onUpdateLikes(id, { likes: likes + 1 })}
+                  onClick={() => dispatch(likeBlog(id, { likes: likes + 1 }))}
                   data-testid="button-like"
                 >
                   like
@@ -44,7 +47,7 @@ function Blog({ blog, onUpdateLikes, onDeleteBlog, username }) {
               </span>
             </p>
             {isCurrentUser && (
-              <button onClick={() => onDeleteBlog(id)}>delete</button>
+              <button onClick={() => dispatch(deleteBlog(id))}>delete</button>
             )}
           </div>
         </>

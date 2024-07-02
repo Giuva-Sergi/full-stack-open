@@ -55,24 +55,6 @@ const App = () => {
     setUser(null);
   }
 
-  async function updateLikes(blogID, newObject) {
-    const updatedBlog = await blogService.update(blogID, newObject);
-
-    const updatedBlogs = blogs.map((blog) =>
-      blog.id === updatedBlog.id ? updatedBlog : blog
-    );
-
-    // setBlogs(updatedBlogs);
-  }
-
-  async function deleteBlog(blogID) {
-    await blogService.deleteBlog(blogID);
-
-    const updatedBlogs = blogs.filter((blog) => blog.id !== blogID);
-
-    // setBlogs(updatedBlogs);
-  }
-
   return (
     <>
       {!user && (
@@ -96,13 +78,7 @@ const App = () => {
           {[...blogs]
             .sort((a, b) => b.likes - a.likes)
             .map((blog) => (
-              <Blog
-                key={blog.id}
-                blog={blog}
-                onUpdateLikes={updateLikes}
-                onDeleteBlog={deleteBlog}
-                username={user.username}
-              />
+              <Blog key={blog.id} blog={blog} username={user.username} />
             ))}
         </>
       )}

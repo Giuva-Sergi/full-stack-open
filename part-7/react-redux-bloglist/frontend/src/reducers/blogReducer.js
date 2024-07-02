@@ -30,3 +30,23 @@ export const createBlog = (newBlog) => {
     dispatch(addBlog(data));
   };
 };
+
+export const likeBlog = (id, newObject) => {
+  return async (dispatch, getState) => {
+    const data = await blogService.update(id, newObject);
+    const oldState = getState().blogs;
+    const updatedState = oldState.map((blog) =>
+      blog.id === data.id ? data : blog
+    );
+    dispatch(setBlogs(updatedState));
+  };
+};
+
+export const deleteBlog = (id) => {
+  return async (dispatch, getState) => {
+    await blogService.deleteBlog(id);
+    const oldState = getState().blogs;
+    const updatedState = oldState.filter((blog) => blog.id !== id);
+    dispatch(setBlogs(updatedState));
+  };
+};
