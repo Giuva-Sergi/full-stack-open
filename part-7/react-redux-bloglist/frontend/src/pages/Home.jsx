@@ -6,6 +6,8 @@ import Blog from "../components/Blog";
 import { useEffect } from "react";
 import { initializeBlogs } from "../reducers/blogReducer";
 import { logOutUser } from "../reducers/loginReducer";
+import BlogRouting from "../components/BlogLink";
+import Blogs from "../components/Blogs";
 
 function Home() {
   const user = useSelector((state) => state.login);
@@ -33,11 +35,15 @@ function Home() {
           <Toggler>
             <AddNewBlog />
           </Toggler>
-          {[...blogs]
-            .sort((a, b) => b.likes - a.likes)
-            .map((blog) => (
-              <Blog key={blog.id} blog={blog} username={user.username} />
-            ))}
+          {/* <ul style={{ padding: 0 }}>
+            {[...blogs]
+              .sort((a, b) => b.likes - a.likes)
+              .map((blog) => (
+                // <Blog key={blog.id} blog={blog} username={user.username} />
+                <BlogRouting key={blog.id} blog={blog} />
+              ))}
+          </ul> */}
+          <Blogs blogs={blogs} />
         </>
       )}
     </>

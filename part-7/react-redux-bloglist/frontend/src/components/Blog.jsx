@@ -1,14 +1,17 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deleteBlog, likeBlog } from "../reducers/blogReducer";
+import { useParams } from "react-router-dom";
 
-function Blog({ blog, username }) {
-  const { title, author, url, likes, id } = blog;
-  const [isExpanded, setIsExpanded] = useState(false);
+function Blog() {
   const dispatch = useDispatch();
+  const { id } = useParams();
+  const blog = useSelector((state) =>
+    state.blogs.find((blog) => blog.id === id)
+  );
+  const login = useSelector((state) => state.login);
 
-  const isCurrentUser = blog?.user?.username
-    ? blog.user.username === username
+  const isCurrentUser = blog.user.username
+    ? blog.user.username === login.username
     : false;
 
   function handleLike() {
@@ -23,42 +26,18 @@ function Blog({ blog, username }) {
   }
 
   return (
-    <div
-      className="blog"
-      style={{
-        border: "2px solid black",
-        padding: "0.5rem",
-        borderRadius: "7px",
-        marginBlock: "0.5rem",
-      }}
-    >
-      <p className="title">{title}</p>
-      <p className="author">{author}</p>
-      <span>
-        <button
-          onClick={() => setIsExpanded(!isExpanded)}
-          data-testid="button-view"
-        >
-          {isExpanded ? "hide" : "view"}
-        </button>
-      </span>
-      {isExpanded && (
-        <>
-          <div>
-            <p className="url">{url}</p>
-            <p className="likes">
-              likes {likes}
-              <span>
-                <button onClick={handleLike} data-testid="button-like">
-                  like
-                </button>
-              </span>
-            </p>
-            {isCurrentUser && (
-              <button onClick={() => dispatch(deleteBlog(id))}>delete</button>
-            )}
-          </div>
-        </>
+    <div>
+      <h2>{blog.title}</h2>
+      <p>
+        <a href="#" target="_blank">
+          {blog.url}
+        </a>
+      </p>
+      <span>{blog.likes} likes</span>
+      <button onClick={handleLike}>like</button>
+      <p>added by {blog.author}</p>
+      {isCurrentUser && (
+        <button onClick={() => dispatch(deleteBlog(blog.id))}>delete</button>
       )}
     </div>
   );
