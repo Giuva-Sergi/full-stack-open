@@ -1,6 +1,7 @@
 const usersRouter = require("express").Router();
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
+const Blog = require("../models/blog");
 
 usersRouter.get("/", async (req, res) => {
   const users = await User.find({}).populate("blogs", {
@@ -10,6 +11,18 @@ usersRouter.get("/", async (req, res) => {
   });
 
   res.status(200).json(users);
+});
+
+usersRouter.get("/:id", async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id).populate("blogs");
+    if (!user) {
+      return res.status(404).send({ message: "user not found" });
+    }
+    return res.json(user);
+  } catch (error) {
+    next(error);
+  }
 });
 
 usersRouter.post("/", async (req, res, next) => {
