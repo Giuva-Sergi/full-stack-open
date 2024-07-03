@@ -12,6 +12,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { element } from "prop-types";
 import Home from "./pages/Home";
 import Users from "./pages/Users";
+import User from "./components/User";
 
 const App = () => {
   // const [username, setUsername] = useState("");
@@ -53,6 +54,7 @@ const App = () => {
       />
       <Route path="/login" element={<LoginForm />} />
       <Route path="/users" element={<Users />} />
+      <Route path="/users/:id" element={<User />} />
     </Routes>
   );
 
