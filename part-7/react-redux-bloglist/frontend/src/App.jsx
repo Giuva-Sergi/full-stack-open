@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Blog from "./components/Blog";
 import AddNewBlog from "./components/AddNewBlog";
 import LoginForm from "./components/LoginForm";
@@ -11,6 +11,7 @@ import { setUser, logOutUser } from "./reducers/loginReducer";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { element } from "prop-types";
 import Home from "./pages/Home";
+import Users from "./pages/Users";
 
 const App = () => {
   // const [username, setUsername] = useState("");
@@ -51,6 +52,7 @@ const App = () => {
         element={user ? <Home /> : <Navigate replace to="/login" />}
       />
       <Route path="/login" element={<LoginForm />} />
+      <Route path="/users" element={<Users />} />
     </Routes>
   );
 

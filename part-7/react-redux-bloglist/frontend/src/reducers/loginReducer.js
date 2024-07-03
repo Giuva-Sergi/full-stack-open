@@ -19,14 +19,13 @@ const loginSlice = createSlice({
 export const { setUser, logOutUser } = loginSlice.actions;
 export default loginSlice.reducer;
 
-export const loginUser = (credentials, callback) => {
+export const loginUser = (credentials) => {
   return async (dispatch) => {
     try {
       const user = await loginService.login(credentials);
       dispatch(setUser(user));
       blogService.setToken(user.token);
       window.localStorage.setItem("loggedUser", JSON.stringify(user));
-      if (callback) callback();
     } catch (error) {
       dispatch(
         showMessage({ message: error.response.data.error, type: "error" }, 3.5)
