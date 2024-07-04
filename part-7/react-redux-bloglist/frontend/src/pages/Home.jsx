@@ -1,53 +1,7 @@
-import { useDispatch, useSelector } from "react-redux";
-import Toggler from "../components/Toggler";
-import AddNewBlog from "../components/AddNewBlog";
-import Notification from "../components/Notification";
-import Blog from "../components/Blog";
-import { useEffect } from "react";
-import { initializeBlogs } from "../reducers/blogReducer";
-import { logOutUser } from "../reducers/loginReducer";
-import BlogRouting from "../components/BlogLink";
 import Blogs from "../components/Blogs";
 
 function Home() {
-  const user = useSelector((state) => state.login);
-  const { message } = useSelector((state) => state.notification);
-  const blogs = useSelector((state) => state.blogs);
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(initializeBlogs());
-  }, []);
-
-  function handleLogout() {
-    window.localStorage.removeItem("loggedUser");
-    dispatch(logOutUser());
-  }
-  return (
-    <>
-      {user && (
-        <>
-          <h2>blogs</h2>
-          {message && <Notification />}
-          <p>{user.name} logged in</p>
-          <button onClick={handleLogout}>log out</button>
-          <Toggler>
-            <AddNewBlog />
-          </Toggler>
-          {/* <ul style={{ padding: 0 }}>
-            {[...blogs]
-              .sort((a, b) => b.likes - a.likes)
-              .map((blog) => (
-                // <Blog key={blog.id} blog={blog} username={user.username} />
-                <BlogRouting key={blog.id} blog={blog} />
-              ))}
-          </ul> */}
-          <Blogs blogs={blogs} />
-        </>
-      )}
-    </>
-  );
+  return <Blogs />;
 }
 
 export default Home;

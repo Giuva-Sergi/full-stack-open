@@ -13,6 +13,7 @@ import { element } from "prop-types";
 import Home from "./pages/Home";
 import Users from "./pages/Users";
 import User from "./components/User";
+import Navbar from "./components/Navbar";
 
 const App = () => {
   // const [username, setUsername] = useState("");
@@ -47,16 +48,20 @@ const App = () => {
   // }
 
   return (
-    <Routes>
-      <Route
-        path="/"
-        element={user ? <Home /> : <Navigate replace to="/login" />}
-      />
-      <Route path="/login" element={<LoginForm />} />
-      <Route path="/users" element={<Users />} />
-      <Route path="/users/:id" element={<User />} />
-      <Route path="/blogs/:id" element={<Blog />} />
-    </Routes>
+    <>
+      {user && <Navbar />}
+      <Routes>
+        <Route
+          path="/"
+          element={user ? <Home /> : <Navigate replace to="/login" />}
+        />
+        <Route path="/login" element={<LoginForm />} />
+        <Route path="/users" element={<Users />} />
+        <Route path="/create" element={<AddNewBlog />} />
+        <Route path="/users/:id" element={<User />} />
+        <Route path="/blogs/:id" element={<Blog />} />
+      </Routes>
+    </>
   );
 
   /// WITHOUT PAGINATION

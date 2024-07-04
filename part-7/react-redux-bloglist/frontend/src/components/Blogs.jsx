@@ -1,6 +1,8 @@
+import { useSelector } from "react-redux";
 import BlogLink from "./BlogLink";
 
-function Blogs({ blogs }) {
+function Blogs() {
+  const blogs = useSelector((state) => state.blogs);
   const style = {
     padding: 0,
   };
