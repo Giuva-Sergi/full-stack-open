@@ -38,6 +38,11 @@ function Navbar() {
       <nav style={navStyle}>
         <ul style={listStyle}>
           <li>
+            <Link to="/" style={linkStyle}>
+              Home
+            </Link>
+          </li>
+          <li>
             <Link to="/create" style={linkStyle}>
               Create
             </Link>

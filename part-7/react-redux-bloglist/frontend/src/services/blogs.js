@@ -12,6 +12,11 @@ const getAll = async () => {
   return request.data;
 };
 
+const getBlogById = async (id) => {
+  const request = await axios.get(`${baseUrl}/${id}`);
+  return request.data;
+};
+
 const create = async (newBlog) => {
   const config = {
     headers: {
@@ -20,6 +25,11 @@ const create = async (newBlog) => {
   };
   const response = await axios.post(baseUrl, newBlog, config);
 
+  return response.data;
+};
+
+const createComment = async (id, comment) => {
+  const response = await axios.post(`${baseUrl}/${id}/comments`, comment);
   return response.data;
 };
 
@@ -38,4 +48,12 @@ const deleteBlog = async (blogId) => {
   await axios.delete(`${baseUrl}/${blogId}`, config);
 };
 
-export default { getAll, create, update, deleteBlog, setToken };
+export default {
+  getAll,
+  getBlogById,
+  create,
+  createComment,
+  update,
+  deleteBlog,
+  setToken,
+};

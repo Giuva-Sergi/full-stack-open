@@ -3,10 +3,19 @@ import blogService from "../services/blogs";
 
 export const blogSlice = createSlice({
   name: "blogs",
-  initialState: [],
+  initialState: {
+    blogs: [],
+    currentBlog: null,
+  },
   reducers: {
     setBlogs: (state, action) => {
-      return action.payload;
+      state.blogs = action.payload;
+    },
+    setCurrentBlog: (state, action) => {
+      state.currentBlog = action.payload;
+    },
+    clearCurrenBlog: (state) => {
+      state.currentBlog = null;
     },
     addBlog: (state, action) => {
       state.push(action.payload);
@@ -14,7 +23,8 @@ export const blogSlice = createSlice({
   },
 });
 
-export const { setBlogs, addBlog } = blogSlice.actions;
+export const { setBlogs, setCurrentBlog, clearCurrenBlog, addBlog } =
+  blogSlice.actions;
 export default blogSlice.reducer;
 
 export const initializeBlogs = () => {
@@ -24,10 +34,31 @@ export const initializeBlogs = () => {
   };
 };
 
+export const getSelectedBlog = (id) => {
+  return async (dispatch) => {
+    const blog = await blogService.getBlogById(id);
+    dispatch(setCurrentBlog(blog));
+  };
+};
+
 export const createBlog = (newBlog) => {
   return async (dispatch) => {
     const data = await blogService.create(newBlog);
     dispatch(addBlog(data));
+  };
+};
+
+export const commentABlog = (id, content) => {
+  const commentObject = {
+    comment: content,
+  };
+  return async (dispatch, getState) => {
+    const { blogs: prevState } = getState().blogs;
+    const data = await blogService.createComment(id, commentObject);
+
+    const newState = prevState.map((blog) => (blog.id === id ? data : blog));
+    dispatch(setBlogs(newState));
+    dispatch(setCurrentBlog(data));
   };
 };
 

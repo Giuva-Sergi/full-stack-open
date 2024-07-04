@@ -6,7 +6,24 @@ const middleware = require("../utils/middleware");
 blogsRouter.get("/", async (request, response) => {
   const blogs = await Blog.find({}).populate("user", { username: 1, name: 1 });
 
-  response.json(blogs);
+  response.status(200).json(blogs);
+});
+
+blogsRouter.get("/:id", async (request, response, next) => {
+  try {
+    const blog = await Blog.findById(request.params.id).populate("user", {
+      username: 1,
+      name: 1,
+    });
+
+    if (!blog) {
+      return response.status(404).send({ error: "blog not found" });
+    }
+
+    return response.status(200).json(blog);
+  } catch (error) {
+    next(error);
+  }
 });
 
 blogsRouter.post(
@@ -96,5 +113,35 @@ blogsRouter.delete(
     }
   }
 );
+
+blogsRouter.post("/:id/comments", async (req, res, next) => {
+  try {
+    const { comment } = req.body;
+
+    if (!comment) {
+      return res.status(400).send({ error: "comment is missing" });
+    }
+
+    const commentObject = {
+      comment,
+      id: Math.random() * 10,
+    };
+
+    const blog = await Blog.findById(req.params.id).populate("user", {
+      username: 1,
+      name: 1,
+    });
+
+    if (!blog) {
+      return res.status(404).send({ error: "blog not found" });
+    }
+    blog.comments = [...blog.comments, commentObject];
+    await blog.save();
+
+    return res.status(201).json(blog);
+  } catch (error) {
+    next(error);
+  }
+});
 
 module.exports = blogsRouter;
