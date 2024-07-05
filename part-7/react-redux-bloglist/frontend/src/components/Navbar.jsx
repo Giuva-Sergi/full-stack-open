@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { logOutUser } from "../reducers/loginReducer";
 import Notification from "./Notification";
 
@@ -7,56 +7,41 @@ function Navbar() {
   const user = useSelector((state) => state.login);
   const { message } = useSelector((state) => state.notification);
   const dispatch = useDispatch();
-
-  const listStyle = {
-    listStyle: "none",
-    margin: 0,
-    padding: 0,
-    display: "flex",
-    gap: "1rem",
-  };
-
-  const navStyle = {
-    display: "flex",
-    gap: "1rem",
-    alignItems: "center",
-    padding: "1rem 1.25rem",
-    backgroundColor: "lightGrey",
-  };
-
-  const linkStyle = {
-    textDecoration: "none",
-  };
+  const navigate = useNavigate();
 
   function handleLogout() {
     window.localStorage.removeItem("loggedUser");
     dispatch(logOutUser());
+    navigate("/");
   }
 
   return (
-    <header>
-      <nav style={navStyle}>
-        <ul style={listStyle}>
-          <li>
-            <Link to="/" style={linkStyle}>
-              Home
-            </Link>
+    <header className="bg-blue-800 py-6 px-3">
+      <nav className="flex justify-between items-center text-slate-200">
+        <ul className="flex gap-3">
+          <li className="hover:scale-110 transition ease-in">
+            <Link to="/">Home</Link>
           </li>
-          <li>
-            <Link to="/create" style={linkStyle}>
-              Create
-            </Link>
+          <li className="hover:scale-110 transition ease-in">
+            <Link to="/create">Create</Link>
           </li>
-          <li>
-            <Link to="/users" style={linkStyle}>
-              Users
-            </Link>
+          <li className="hover:scale-110 transition ease-in">
+            <Link to="/users">Users</Link>
           </li>
         </ul>
-        <span>{user.name} logged in</span>
-        <button onClick={handleLogout}>log out</button>
+        <h2 className="my-8 uppercase text-slate-200 text-center text-2xl">
+          blogs app
+        </h2>
+        <div className="flex flex-col gap-3">
+          <span>{user.name} logged in</span>
+          <button
+            className="uppercase text-sm bg-red-400 hover:bg-red-700 transition ease-in rounded-xl py-3 px-2 w-1/2 mx-auto"
+            onClick={handleLogout}
+          >
+            log out
+          </button>
+        </div>
       </nav>
-      <h2>blogs app</h2>
       {message && <Notification />}
     </header>
   );

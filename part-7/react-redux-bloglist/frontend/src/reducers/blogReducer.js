@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import blogService from "../services/blogs";
+import { showMessage } from "./notificationReducer";
 
 export const blogSlice = createSlice({
   name: "blogs",
@@ -53,12 +54,18 @@ export const commentABlog = (id, content) => {
     comment: content,
   };
   return async (dispatch, getState) => {
-    const { blogs: prevState } = getState().blogs;
-    const data = await blogService.createComment(id, commentObject);
+    try {
+      const { blogs: prevState } = getState().blogs;
+      const data = await blogService.createComment(id, commentObject);
 
-    const newState = prevState.map((blog) => (blog.id === id ? data : blog));
-    dispatch(setBlogs(newState));
-    dispatch(setCurrentBlog(data));
+      const newState = prevState.map((blog) => (blog.id === id ? data : blog));
+      dispatch(setBlogs(newState));
+      dispatch(setCurrentBlog(data));
+    } catch (error) {
+      dispatch(
+        showMessage({ message: error.response.data.error, type: "error" }, 3.5)
+      );
+    }
   };
 };
 

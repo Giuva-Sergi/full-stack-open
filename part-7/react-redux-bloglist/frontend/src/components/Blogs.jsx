@@ -6,16 +6,13 @@ import { initializeBlogs } from "../reducers/blogReducer";
 function Blogs() {
   const { blogs } = useSelector((state) => state.blogs);
   const dispatch = useDispatch();
-  const style = {
-    padding: 0,
-  };
 
   useEffect(() => {
     dispatch(initializeBlogs());
   }, []);
 
   return (
-    <ul style={style}>
+    <ul className="w-1/2 mx-auto mt-12">
       {blogs.map((blog) => (
         <BlogLink key={blog.id} blog={blog} />
       ))}

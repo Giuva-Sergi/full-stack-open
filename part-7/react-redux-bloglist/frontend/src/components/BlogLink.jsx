@@ -1,16 +1,13 @@
 import { Link } from "react-router-dom";
+import { FaBookReader } from "react-icons/fa";
 
 function BlogLink({ blog }) {
-  const style = {
-    listStyle: "none",
-    marginBottom: "1rem",
-    border: "1px solid steelblue",
-    padding: "1rem 0.5rem 0",
-    borderRadius: "7px",
-  };
   return (
-    <li style={style}>
-      <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
+    <li className="w-3/4 p-3 flex justify-between cursor-pointer border border-blue-200 mb-8 rounded-md hover:bg-blue-400 transition ease-in hover:text-white mx-auto">
+      <Link to={`/blogs/${blog.id}`} className="text-lg">
+        <h4>{blog.title}</h4>
+      </Link>
+      <FaBookReader />
     </li>
   );
 }
