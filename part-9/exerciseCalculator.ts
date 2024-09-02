@@ -13,9 +13,9 @@ interface SummaryResult {
 const calculateExercise = (
   dailyExerciseHours: number[],
   targetAmount: number
-) => {
+): SummaryResult => {
   let success = false;
-  let rating;
+  let rating: Success;
   let ratingDescription;
   const numberOfDays = dailyExerciseHours.length;
   const numberOfTrainingDays = dailyExerciseHours.filter(
@@ -40,12 +40,12 @@ const calculateExercise = (
 
   return {
     periodLength: numberOfDays,
-    numberOfTrainingDays,
+    numberOfTrainingDays: numberOfTrainingDays,
     target: targetAmount,
-    avgTime,
-    success,
-    rating,
-    ratingDescription,
+    avgTime: avgTime,
+    success: success,
+    rating: rating,
+    ratingDescription: ratingDescription,
   };
 };
 
