@@ -21,13 +21,6 @@ const parseArguments = (args: string[]) => {
   }
 };
 
-// multiplicator(2, 3, "Two multiplied three is equal to:");
-// multiplicator("how about a string", 3, "Multiply a string and 3 is equal to:"); // wrong type => won't compile
-
-// Create a specific type
-
-// console.log(calculator(2, 5, "divide"));
-// console.log(calculator(2, 0, "divide"));
 try {
   const { value1, value2 } = parseArguments(process.argv);
   multiplicator(
