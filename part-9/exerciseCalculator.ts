@@ -1,3 +1,5 @@
+import { argumentParserExercisesCalculator } from "./utils";
+
 type Success = 1 | 2 | 3;
 
 interface SummaryResult {
@@ -49,4 +51,12 @@ const calculateExercise = (
   };
 };
 
-console.log(calculateExercise([3, 0, 2, 4.5, 0, 3, 1], 4));
+console.log(argumentParserExercisesCalculator(process.argv));
+
+try {
+  const { target, hours } = argumentParserExercisesCalculator(process.argv);
+  console.log(calculateExercise(hours, target));
+} catch (error) {
+  console.error(error.message);
+  process.exit(1);
+}

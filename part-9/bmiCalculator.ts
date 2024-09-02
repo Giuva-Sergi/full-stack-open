@@ -1,5 +1,8 @@
-const calculateBMI = (height: number, weight: number) => {
-  const BMI = weight / (height * height);
+import { argumentParser } from "./utils";
+
+const calculateBMI = (height: number, weight: number): string => {
+  const heightMeters = height / 100;
+  const BMI = weight / heightMeters ** 2;
 
   if (BMI < 18.5) {
     return "Underweight";
@@ -10,4 +13,10 @@ const calculateBMI = (height: number, weight: number) => {
   }
 };
 
-console.log(calculateBMI(180, 74));
+try {
+  const { height, weight } = argumentParser(process.argv);
+  console.log(calculateBMI(height, weight));
+} catch (error) {
+  console.error(error.message);
+  process.exit(1);
+}
