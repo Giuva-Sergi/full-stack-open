@@ -8,7 +8,7 @@ interface ExercisesValues {
   hours: number[];
 }
 
-const isNumber = (arg: any): boolean => {
+export const isNumber = (arg: any): boolean => {
   return !isNaN(Number(arg));
 };
 
