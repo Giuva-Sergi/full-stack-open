@@ -12,7 +12,7 @@ interface SummaryResult {
   ratingDescription: string;
 }
 
-const calculateExercise = (
+export const calculateExercise = (
   dailyExerciseHours: number[],
   targetAmount: number
 ): SummaryResult => {
@@ -51,10 +51,14 @@ const calculateExercise = (
   };
 };
 
-try {
-  const { target, hours } = argumentParserExercisesCalculator(process.argv);
-  console.log(calculateExercise(hours, target));
-} catch (error) {
-  console.error(error.message);
-  process.exit(1);
+if (require.main === module) {
+  try {
+    const { target, hours } = argumentParserExercisesCalculator(process.argv);
+    console.log(calculateExercise(hours, target));
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      console.error(error.message);
+      process.exit(1);
+    }
+  }
 }
