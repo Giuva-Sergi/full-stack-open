@@ -1,4 +1,4 @@
-interface Values {
+interface BmiValues {
   height: number;
   weight: number;
 }
@@ -12,7 +12,7 @@ const isNumber = (arg: any): boolean => {
   return !isNaN(Number(arg));
 };
 
-export const argumentParser = (args: string[]): Values => {
+export const argumentParser = (args: string[]): BmiValues => {
   if (args.length > 4) throw new Error("Too many arguments");
   if (args.length < 4) throw new Error("Not enough arguments");
 
@@ -26,7 +26,9 @@ export const argumentParser = (args: string[]): Values => {
   }
 };
 
-export const argumentParserExercisesCalculator = (args: string[]) => {
+export const argumentParserExercisesCalculator = (
+  args: string[]
+): ExercisesValues => {
   if (args.length < 4) throw new Error("Not enough arguments");
   if (isNumber(args[2]) && args.slice(3).every((arg) => isNumber(arg))) {
     return {

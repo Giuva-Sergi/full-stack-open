@@ -51,8 +51,6 @@ const calculateExercise = (
   };
 };
 
-console.log(argumentParserExercisesCalculator(process.argv));
-
 try {
   const { target, hours } = argumentParserExercisesCalculator(process.argv);
   console.log(calculateExercise(hours, target));
