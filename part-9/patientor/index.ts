@@ -1,10 +1,12 @@
 import express from "express";
+import cors from "cors";
 
 const app = express();
+app.use(cors());
 
-const PORT = 8000;
+const PORT = 3001;
 
-app.get("/ping", (_req, res) => {
+app.get("/api/ping", (_req, res) => {
   res.send("pong");
 });
 
