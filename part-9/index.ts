@@ -32,7 +32,7 @@ interface ExerciseRequestBody {
 }
 
 app.post("/exercises", (req, res) => {
-  const { daily_exercises, target }: ExerciseRequestBody = req.body;
+  const { daily_exercises, target } = req.body as ExerciseRequestBody;
 
   if (!daily_exercises || !target) {
     return res.status(400).json({ error: "parameters missing" });
