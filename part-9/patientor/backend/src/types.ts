@@ -1,4 +1,4 @@
-type Gender = "male" | "female";
+export type Gender = "male" | "female";
 
 export interface Diagnosis {
   code: string;
@@ -11,7 +11,7 @@ export interface Patient {
   name: string;
   dateOfBirth: string;
   ssn: string;
-  gender: string;
+  gender: Gender;
   occupation: string;
 }
 
