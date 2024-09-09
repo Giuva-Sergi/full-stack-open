@@ -63,12 +63,6 @@ const isNewDiaryObject = (object: unknown): object is NewDiaryObject => {
   );
 };
 const toNewDiaryEntry = (object: unknown): NewDiaryObject => {
-  //   const newEntry: NewDiaryObject = {
-  //     weather: "cloudy",
-  //     visibility: "great",
-  //     date: "2002-01-01",
-  //     comment: "fake news",
-  //   };ù
   if (!isNewDiaryObject(object)) {
     throw new Error("Incorrect or missing data");
   }
