@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { NewDiary } from "../types";
+import ErrorMessage from "./ErrorMessage";
 
 interface AddDiaryFormProps {
   onHandleSubmit: (e: React.SyntheticEvent, data: NewDiary) => void;
+  message: string;
 }
 
-function AddDiaryForm({ onHandleSubmit }: AddDiaryFormProps) {
+function AddDiaryForm({ onHandleSubmit, message }: AddDiaryFormProps) {
   const [formData, setFormData] = useState({
     date: "",
     weather: "",
@@ -33,6 +35,7 @@ function AddDiaryForm({ onHandleSubmit }: AddDiaryFormProps) {
   return (
     <div>
       <h2>Add new entry</h2>
+      {message && <ErrorMessage message={message} />}
       <form
         onSubmit={(e) => {
           onHandleSubmit(e, formData);

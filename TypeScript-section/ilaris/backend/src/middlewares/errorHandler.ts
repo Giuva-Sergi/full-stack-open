@@ -8,6 +8,7 @@ export const errorHandler = (
   next: NextFunction
 ) => {
   if (error instanceof z.ZodError) {
+    console.log(error);
     res.status(400).json({ error: error.issues });
   } else {
     next(error);
