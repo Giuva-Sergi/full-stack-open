@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import diariesRoutes from "./routes/diaries";
 
 const app = express();
@@ -6,6 +7,8 @@ const app = express();
 app.use(express.json());
 
 app.use("/api/diaries", diariesRoutes);
+
+app.use(cors());
 
 const PORT = 3000;
 

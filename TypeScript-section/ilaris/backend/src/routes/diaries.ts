@@ -6,11 +6,12 @@ import { errorHandler } from "../middlewares/errorHandler";
 
 const router = express.Router();
 router.use(express.json());
+router.use(errorHandler);
 
 router.get("/", (_req, res) => {
   const entries: NonSensitiveDiaryEntry[] =
     diaryService.getNonSensitiveEntries();
-  res.json(entries);
+  res.status(200).json(entries);
 });
 
 router.get("/:id", (req, res) => {
@@ -35,7 +36,5 @@ router.post(
     return res.status(201).json(addedEntry);
   }
 );
-
-router.use(errorHandler);
 
 export default router;
