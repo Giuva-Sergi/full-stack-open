@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { NewDiary } from "../types";
 import ErrorMessage from "./ErrorMessage";
 
@@ -42,34 +42,94 @@ function AddDiaryForm({ onHandleSubmit, message }: AddDiaryFormProps) {
           resetFormData();
         }}
       >
-        <div>
+        <fieldset>
           date
           <input
-            type="text"
+            type="date"
             id="date"
             value={formData.date}
             onChange={(e) => handleChange(e)}
           />
-        </div>
-        <div>
-          weather
-          <input
-            type="text"
-            id="weather"
-            value={formData.weather}
-            onChange={(e) => handleChange(e)}
-          />
-        </div>
-        <div>
+        </fieldset>
+        <fieldset>
           visibility
           <input
-            type="text"
+            type="radio"
             id="visibility"
-            value={formData.visibility}
+            name="visibility"
+            value="great"
             onChange={(e) => handleChange(e)}
           />
-        </div>
-        <div>
+          <label htmlFor="visibility">great</label>
+          <input
+            type="radio"
+            id="visibility"
+            name="visibility"
+            value="good"
+            onChange={(e) => handleChange(e)}
+          />
+          <label htmlFor="visibility">good</label>
+          <input
+            type="radio"
+            id="visibility"
+            name="visibility"
+            value="ok"
+            onChange={(e) => handleChange(e)}
+          />
+          <label htmlFor="visibility">ok</label>
+          <input
+            type="radio"
+            id="visibility"
+            name="visibility"
+            value="poor"
+            onChange={(e) => handleChange(e)}
+          />
+          <label htmlFor="visibility">poor</label>
+        </fieldset>
+        <fieldset>
+          weather
+          <input
+            type="radio"
+            id="weather"
+            name="weather"
+            value="sunny"
+            onChange={(e) => handleChange(e)}
+          />
+          <label htmlFor="weather">sunny</label>
+          <input
+            type="radio"
+            id="weather"
+            name="weather"
+            value="rainy"
+            onChange={(e) => handleChange(e)}
+          />
+          <label htmlFor="weather">rainy</label>
+          <input
+            type="radio"
+            id="weather"
+            name="weather"
+            value="cloudy"
+            onChange={(e) => handleChange(e)}
+          />
+          <label htmlFor="weather">cloudy</label>
+          <input
+            type="radio"
+            id="weather"
+            name="weather"
+            value="stormy"
+            onChange={(e) => handleChange(e)}
+          />
+          <label htmlFor="weather">stormy</label>
+          <input
+            type="radio"
+            id="weather"
+            name="weather"
+            value="windy"
+            onChange={(e) => handleChange(e)}
+          />
+          <label htmlFor="weather">windy</label>
+        </fieldset>
+        <fieldset>
           comment
           <input
             type="text"
@@ -77,7 +137,7 @@ function AddDiaryForm({ onHandleSubmit, message }: AddDiaryFormProps) {
             value={formData.comment}
             onChange={(e) => handleChange(e)}
           />
-        </div>
+        </fieldset>
         <button>Add diary</button>
       </form>
     </div>
