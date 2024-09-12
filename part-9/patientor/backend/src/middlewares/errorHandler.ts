@@ -10,7 +10,7 @@ export const errorHandler = (
   if (error instanceof z.ZodError) {
     res.status(400).json({ error: error.issues });
   } else {
-    console.log("PORCO DI DIO");
-    next(error);
+    res.status(404).json({ error: "Patient not found" });
   }
+  next(error);
 };

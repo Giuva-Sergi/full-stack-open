@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import { NewPatient, NonSensitivePatientData, Patient } from "../types";
 import patientService from "../services/patientService";
 // import toNewPatientEntry from "../utils";
@@ -10,6 +10,16 @@ const router = express.Router();
 router.get("/", (_req, res) => {
   const data: NonSensitivePatientData[] = patientService.getAllPatients();
   res.send(data);
+});
+
+router.get("/:id", (req, res: Response<Patient>, next: NextFunction) => {
+  try {
+    const data = patientService.getPatientInfos(req.params.id);
+    return res.status(200).json(data);
+  } catch (error) {
+    next(error);
+    return;
+  }
 });
 
 router.post(
