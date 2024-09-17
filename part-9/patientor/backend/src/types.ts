@@ -1,9 +1,13 @@
 import { z } from "zod";
 import { NewPatientSchema } from "./utils";
+import { EntrySchema, NewEntrySchema } from "./entryUtils";
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-
-export interface Entry {}
+export enum HealthCheckRating {
+  "Healty" = 0,
+  "LowRisk" = 1,
+  "HighRisk" = 2,
+  "CriticalRisk" = 3,
+}
 
 export enum Gender {
   Male = "male",
@@ -29,3 +33,5 @@ export interface Patient {
 
 export type NonSensitivePatientData = Omit<Patient, "ssn" | "entries">;
 export type NewPatient = z.infer<typeof NewPatientSchema>;
+export type Entry = z.infer<typeof EntrySchema>;
+export type NewEntry = z.infer<typeof NewEntrySchema>;

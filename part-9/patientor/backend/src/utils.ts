@@ -38,7 +38,7 @@ export const convertGender = (gender: string): Gender => {
     case "other":
       return Gender.Other;
     default:
-      throw new Error("unkown enum typ");
+      throw new Error("unkown enum type");
   }
 };
 
